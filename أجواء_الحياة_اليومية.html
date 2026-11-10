@@ -1,0 +1,2990 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="tool">
+  <meta name="design-style" content="sticker">
+  <title>L'Académie de Français de Prof-Abdou | Jeux Pédagogiques & Animation</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces */
+      --background: #fef7ff;
+      --surface-container-low: #ffffff;
+      --surface-container: #f8eef8;
+      --surface-container-high: #f2e8f2;
+
+      /* Ink */
+      --on-surface: #2e1a28;
+      --on-surface-variant: #604868;
+
+      /* Rules */
+      --outline: #907898;
+      --outline-variant: #dcc8e0;
+
+      /* Accents */
+      --primary: #c2207f;
+      --on-primary: #ffffff;
+      --primary-container: #f080c0;
+      --on-primary-container: #2e1a28;
+      --secondary: #7c52aa;
+      --on-secondary: #ffffff;
+      --tertiary: #0096cc;
+      --error: #c53030;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #c2207f;
+      --data-2: #7c52aa;
+      --data-3: #0096cc;
+      --data-4: #d96a00;
+      --data-context: #c8b8d0;
+
+      /* Semantic */
+      --positive: #16a34a;
+      --on-positive: #ffffff;
+      --warning: #d96a00;
+      --on-warning: #ffffff;
+      --focus: #c2207f;
+
+      /* Game state hues */
+      --correct-bg: #e8f7ee;
+      --misplaced-bg: #fef3e2;
+      --absent-bg: #f0e8f4;
+
+      /* Fonts */
+      --font-headline: 'DM Sans', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-label: 'DM Sans', sans-serif;
+
+      /* Shape */
+      --rounded: 1rem;
+      --rounded-lg: 2rem;
+      --rounded-full: 9999px;
+
+      /* Style effects */
+      --shadow-pink: 0 4px 16px rgb(224 64 160 / 0.2);
+      --shadow-pink-deep: 0 10px 28px rgb(224 64 160 / 0.32);
+      --shadow-grape: 0 4px 16px rgb(124 82 170 / 0.2);
+      --shadow-sky: 0 4px 16px rgb(0 150 204 / 0.2);
+      --pop-scale: scale(1.03);
+      --lift: translateY(-4px);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      /* Type scale for tool */
+      --display-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size: 0.75rem;
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { overflow-x: clip; margin: 0; padding: 0; }
+    header { position: static !important; }
+
+    body {
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: var(--space-3xl);
+    }
+
+    .page-grid {
+      display: grid;
+      gap: var(--space-lg);
+      padding: var(--space-md) var(--space-lg);
+      max-width: 1240px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Accessibility Focus */
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-headline);
+      color: var(--on-surface);
+      margin: 0 0 var(--space-sm) 0;
+      line-height: 1.15;
+    }
+    .display {
+      font-weight: 900;
+      font-size: var(--display-size);
+      letter-spacing: -0.03em;
+    }
+    .display em {
+      font-style: normal;
+      color: var(--primary);
+    }
+    .headline {
+      font-weight: 800;
+      font-size: var(--headline-size);
+      letter-spacing: -0.02em;
+    }
+    .subhead {
+      font-weight: 600;
+      font-size: var(--subhead-size);
+      color: var(--on-surface-variant);
+    }
+    .label {
+      font-size: var(--label-size);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface-variant);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Cards with tinted shadows */
+    .card {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      box-shadow: var(--shadow-pink);
+      padding: var(--space-lg);
+      position: relative;
+    }
+    .card-grape {
+      box-shadow: var(--shadow-grape);
+    }
+    .card-sky {
+      box-shadow: var(--shadow-sky);
+    }
+    .hero-panel {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg) var(--space-xl);
+      box-shadow: var(--shadow-pink-deep);
+    }
+
+    /* Buttons & Pills */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      font-family: var(--font-headline);
+      font-size: var(--body-size);
+      font-weight: 700;
+      border-radius: var(--rounded-full);
+      padding: var(--space-sm) var(--space-lg);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      min-height: 44px;
+      transition: transform var(--dur-short) var(--ease-bounce), box-shadow var(--dur-short) var(--ease-out);
+    }
+    .btn:hover {
+      transform: var(--pop-scale);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--shadow-pink);
+    }
+    .btn-primary:hover {
+      box-shadow: var(--shadow-pink-deep);
+    }
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--on-secondary);
+      box-shadow: var(--shadow-grape);
+    }
+    .btn-tertiary {
+      background-color: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .btn-quiet {
+      background: transparent;
+      color: var(--primary);
+      padding: var(--space-xs) var(--space-md);
+    }
+    .btn-sm {
+      padding: var(--space-xs) var(--space-md);
+      font-size: 0.85rem;
+      min-height: 36px;
+    }
+
+    /* Pills & Badges */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--rounded-full);
+      font-size: var(--label-size);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .pill-bubblegum {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .pill-grape {
+      background-color: var(--surface-container-high);
+      color: var(--secondary);
+      border: 1.5px solid var(--secondary);
+    }
+    .pill-sky {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+      border: 1.5px solid var(--tertiary);
+    }
+    .pill-success {
+      background-color: var(--correct-bg);
+      color: var(--positive);
+      border: 1.5px solid var(--positive);
+    }
+
+    /* Tabs Bar */
+    .nav-tabs {
+      display: flex;
+      gap: var(--space-sm);
+      overflow-x: auto;
+      padding: var(--space-xs) 0;
+      scrollbar-width: thin;
+    }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background-color: var(--surface-container);
+      color: var(--on-surface-variant);
+      border: 1.5px solid transparent;
+      border-radius: var(--rounded-full);
+      padding: var(--space-sm) var(--space-lg);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--dur-short) var(--ease-out);
+      min-height: 44px;
+    }
+    .tab-btn:hover {
+      background-color: var(--surface-container-high);
+      color: var(--on-surface);
+      transform: var(--pop-scale);
+    }
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--shadow-pink);
+    }
+
+    /* Prof Abdou Signature Avatar */
+    .prof-banner {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      background: linear-gradient(135deg, var(--surface-container-low), var(--surface-container));
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      box-shadow: var(--shadow-pink);
+    }
+    .prof-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--rounded-full);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-pink-deep);
+      border: 3px solid var(--surface-container-low);
+    }
+    .speech-bubble {
+      position: relative;
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-grape);
+      flex: 1;
+      font-size: 0.95rem;
+    }
+    .speech-bubble::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 8px 10px 8px 0;
+      border-style: solid;
+      border-color: transparent var(--surface-container-low) transparent transparent;
+    }
+
+    /* Inputs & Selects */
+    input[type="text"], input[type="number"], select {
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+      border: 2px solid var(--outline);
+      border-radius: var(--rounded-full);
+      padding: var(--space-sm) var(--space-lg);
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      min-height: 44px;
+      transition: border-color var(--dur-short) var(--ease-out);
+      width: 100%;
+    }
+    input[type="text"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-container);
+    }
+
+    /* Segmented Control */
+    .segmented {
+      display: inline-flex;
+      background: var(--surface-container-high);
+      border-radius: var(--rounded-full);
+      padding: 4px;
+      gap: 4px;
+    }
+    .segmented-btn {
+      border: none;
+      background: transparent;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded-full);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--on-surface-variant);
+      transition: all var(--dur-short) var(--ease-bounce);
+      min-height: 36px;
+    }
+    .segmented-btn.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--shadow-pink);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    /* Roulettes Tourniverbe */
+    .wheel-card {
+      background: var(--surface-container);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      text-align: center;
+      border: 2px dashed var(--outline-variant);
+    }
+    .wheel-slot {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-full);
+      padding: var(--space-md) var(--space-lg);
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--secondary);
+      box-shadow: var(--shadow-grape);
+      margin: var(--space-md) 0;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--dur-short) var(--ease-bounce);
+    }
+    .wheel-slot.spinning {
+      animation: spinBounce 0.4s infinite alternate;
+    }
+    @keyframes spinBounce {
+      0% { transform: translateY(-4px) scale(0.98); }
+      100% { transform: translateY(4px) scale(1.02); }
+    }
+
+    /* Motus Grid */
+    .motus-board {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      align-items: center;
+      margin: var(--space-md) 0;
+    }
+    .motus-row {
+      display: flex;
+      gap: var(--space-xs);
+    }
+    .motus-cell {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--space-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      background: var(--surface-container);
+      border: 2px solid var(--outline-variant);
+      color: var(--on-surface);
+      transition: transform 0.2s var(--ease-bounce);
+    }
+    .motus-cell.correct {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-pink);
+    }
+    .motus-cell.misplaced {
+      background: var(--warning);
+      color: var(--on-warning);
+      border-color: var(--warning);
+    }
+    .motus-cell.absent {
+      background: var(--surface-container-high);
+      color: var(--on-surface-variant);
+      border-color: var(--outline);
+    }
+
+    /* Virtual Keyboard */
+    .keyboard-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      max-width: 600px;
+      margin: var(--space-md) auto 0 auto;
+    }
+    .keyboard-row {
+      display: flex;
+      gap: 5px;
+    }
+    .key-btn {
+      min-width: 36px;
+      height: 44px;
+      border-radius: var(--rounded-full);
+      border: none;
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      transition: transform var(--dur-micro) var(--ease-bounce);
+    }
+    .key-btn:hover {
+      transform: var(--pop-scale);
+    }
+    .key-btn.key-correct {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .key-btn.key-misplaced {
+      background: var(--warning);
+      color: var(--on-warning);
+    }
+    .key-btn.key-absent {
+      background: var(--outline-variant);
+      color: var(--on-surface-variant);
+      opacity: 0.6;
+    }
+
+    /* Draggable sentence tokens */
+    .phrase-tokens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      min-height: 54px;
+      padding: var(--space-md);
+      background: var(--surface-container);
+      border-radius: var(--rounded);
+      align-items: center;
+      border: 2px dashed var(--outline);
+    }
+    .phrase-token {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded-full);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-grape);
+      user-select: none;
+      transition: all var(--dur-short) var(--ease-bounce);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .phrase-token:hover {
+      transform: var(--pop-scale);
+      box-shadow: var(--shadow-pink);
+    }
+
+    /* Options buttons for Quiz */
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+    .quiz-opt-btn {
+      background: var(--surface-container-low);
+      border: 2px solid var(--outline-variant);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--on-surface);
+      cursor: pointer;
+      box-shadow: var(--shadow-pink);
+      transition: all var(--dur-short) var(--ease-bounce);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .quiz-opt-btn:hover {
+      transform: var(--pop-scale);
+      border-color: var(--primary);
+    }
+    .quiz-opt-btn.correct {
+      background-color: var(--correct-bg);
+      border-color: var(--positive);
+      color: var(--positive);
+    }
+    .quiz-opt-btn.wrong {
+      background-color: var(--surface-container-high);
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    /* Astuce Card */
+    .astuce-box {
+      background: linear-gradient(135deg, var(--surface-container), var(--surface-container-low));
+      border-left: 6px solid var(--secondary);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    /* Progress bar with lollipop look */
+    .progress-track {
+      background: var(--surface-container-high);
+      border-radius: var(--rounded-full);
+      height: 14px;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+    .progress-fill {
+      background: var(--tertiary);
+      border-radius: var(--rounded-full);
+      height: 100%;
+      transition: width var(--dur-long) var(--ease-out);
+    }
+
+    /* Badges list */
+    .trophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .trophy-card {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      text-align: center;
+      box-shadow: var(--shadow-pink);
+      transition: transform var(--dur-short) var(--ease-bounce);
+    }
+    .trophy-card.unlocked {
+      border: 2px solid var(--primary);
+      box-shadow: var(--shadow-pink-deep);
+    }
+    .trophy-card.locked {
+      opacity: 0.5;
+      filter: grayscale(80%);
+    }
+    .trophy-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto var(--space-sm) auto;
+      border-radius: var(--rounded-full);
+      background: var(--surface-container);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    /* Mode Vidéoprojecteur */
+    body.projector-mode {
+      font-size: 1.15rem;
+    }
+    body.projector-mode .card {
+      padding: var(--space-xl);
+      border: 3px solid var(--secondary);
+    }
+    body.projector-mode .display {
+      font-size: clamp(2.2rem, 1.8rem + 1.8vw, 3rem);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .prof-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .speech-bubble::before {
+        display: none;
+      }
+      .page-grid {
+        padding: var(--space-sm);
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-grid">
+  <!-- Top Bar & Teacher Banner -->
+  <header class="hero-panel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-md);">
+      <div>
+        <span class="pill pill-bubblegum">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          Portail Éducatif Officiel de Français
+        </span>
+        <h1 class="display" style="margin-top: var(--space-xs);">
+          L'Académie de Français de <em>Prof-Abdou</em>
+        </h1>
+        <p class="subhead" style="margin: 0;">
+          Jeux interactifs de vocabulaire, grammaire, orthographe et culture littéraire du CP au Collège.
+        </p>
+      </div>
+
+      <!-- Quick Controls: Cycle selector, Sound, Class Mode -->
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-sm);">
+        <div style="display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap;">
+          <div class="segmented" id="cycle-segmented" aria-label="Sélection du niveau scolaire">
+            <button class="segmented-btn active" onclick="setCycleLevel('cycle2')">CP-CE1-CE2</button>
+            <button class="segmented-btn" onclick="setCycleLevel('cycle3')">CM1-CM2</button>
+            <button class="segmented-btn" onclick="setCycleLevel('cycle4')">Collège (6e-3e)</button>
+          </div>
+
+          <button class="btn btn-tertiary btn-sm" id="btn-sound-toggle" onclick="toggleSound()" title="Activer / Désactiver les sons">
+            <i data-lucide="volume-2" id="sound-icon" style="width: 16px; height: 16px;"></i>
+            <span id="sound-status-label">Son : Oui</span>
+          </button>
+
+          <button class="btn btn-secondary btn-sm" id="btn-proj-toggle" onclick="toggleProjectorMode()" title="Mode Vidéoprojecteur pour projection en classe entière">
+            <i data-lucide="projector" style="width: 16px; height: 16px;"></i>
+            <span id="proj-status-label">Mode Ardoise / Classe</span>
+          </button>
+        </div>
+
+        <!-- Plumes d'or score badge -->
+        <div style="display: flex; gap: var(--space-md); align-items: center;">
+          <div class="pill pill-grape" style="font-size: 0.9rem; padding: 0.4rem 1rem;">
+            <i data-lucide="feather" style="width: 16px; height: 16px; color: var(--secondary);"></i>
+            <span>Plumes d'or : <strong id="score-display">0</strong></span>
+          </div>
+          <div class="pill pill-bubblegum" style="font-size: 0.9rem;">
+            <i data-lucide="award" style="width: 16px; height: 16px;"></i>
+            <span id="rank-display">Apprenti des Lettres</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prof-Abdou Speech Banner -->
+    <div class="prof-banner">
+      <div class="prof-avatar" aria-label="Avatar de Prof-Abdou">
+        <i data-lucide="graduation-cap" style="width: 38px; height: 38px;"></i>
+      </div>
+      <div class="speech-bubble" id="prof-speech">
+        <strong>Prof-Abdou vous salue :</strong> « Bienvenue dans notre arène de la langue française ! Choisis un jeu ou un défi du jour. En classe ou à la maison, apprends en t'amusant et collectionne les Plumes d'or ! »
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar (Game Modules) -->
+  <nav class="nav-tabs" role="tablist" aria-label="Modules de jeux">
+    <button class="tab-btn active" role="tab" aria-selected="true" id="tab-btn-hub" onclick="switchTab('hub')">
+      <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+      <span>Le Défi du Jour</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-tourniverbe" onclick="switchTab('tourniverbe')">
+      <i data-lucide="rotate-cw" style="width: 18px; height: 18px;"></i>
+      <span>Le Tourniverbe (Conjugaison)</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-motus" onclick="switchTab('motus')">
+      <i data-lucide="grid-3x3" style="width: 18px; height: 18px;"></i>
+      <span>Le Mot-Mystère (Vocabulaire)</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-homophones" onclick="switchTab('homophones')">
+      <i data-lucide="check-check" style="width: 18px; height: 18px;"></i>
+      <span>L'Arène des Homophones</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-syntaxe" onclick="switchTab('syntaxe')">
+      <i data-lucide="puzzle" style="width: 18px; height: 18px;"></i>
+      <span>L'Architecte de Phrases</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-culture" onclick="switchTab('culture')">
+      <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+      <span>L'Agora Littéraire</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-classe" onclick="switchTab('classe')">
+      <i data-lucide="screen-share" style="width: 18px; height: 18px;"></i>
+      <span>Atelier Vidéoprojecteur</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" id="tab-btn-trophies" onclick="switchTab('trophies')">
+      <i data-lucide="trophy" style="width: 18px; height: 18px;"></i>
+      <span>Mon Palmarès</span>
+    </button>
+  </nav>
+
+  <!-- TAB 1: HUB / DÉFI DU JOUR -->
+  <main id="tab-content-hub" class="tab-section">
+    <div class="grid-3">
+      <!-- Card: Daily Mini-Challenge -->
+      <div class="card" style="grid-column: span 2;">
+        <span class="label">Rituel d'Échauffement</span>
+        <h2 class="headline">Le Défi Éclair de <em>Prof-Abdou</em></h2>
+        <p>Réponds correctement à ce trio de questions pour remporter <strong>15 Plumes d'or</strong> et faire chauffer tes méninges !</p>
+
+        <div id="daily-challenge-container" style="background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-md); margin: var(--space-md) 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+            <span class="pill pill-bubblegum" id="daily-step-pill">Question 1 sur 3</span>
+            <span class="pill pill-sky" id="daily-theme-pill">Grammaire</span>
+          </div>
+          <h3 id="daily-question-text" style="font-size: 1.15rem; margin: var(--space-sm) 0 var(--space-md) 0;">Chargement de la question...</h3>
+          <div class="quiz-options" id="daily-options-box">
+            <!-- Dynamic option buttons -->
+          </div>
+          <div id="daily-feedback-box" style="display: none;" class="astuce-box"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button class="btn btn-primary" id="btn-next-daily" onclick="nextDailyQuestion()" style="display: none;">
+            Question suivante <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+          </button>
+          <button class="btn btn-quiet" onclick="generateNewDailyTrio()">
+            <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i> Tirer un nouveau défi éclair
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick summary card -->
+      <div class="card card-grape">
+        <span class="label">Votre Progression</span>
+        <h2 class="headline">Carnet de Bord</h2>
+        
+        <div style="margin: var(--space-md) 0;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs); font-size: 0.9rem;">
+            <span>Plumes d'or vers le prochain rang :</span>
+            <strong id="progress-text">0 / 50</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="rank-progress-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-sm); font-size: 0.9rem;">
+          <div style="display: flex; justify-content: space-between;">
+            <span>Défis remportés :</span>
+            <strong id="stat-challenges-completed">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Mots-mystères déchiffrés :</span>
+            <strong id="stat-motus-completed">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Verbes domptés :</span>
+            <strong id="stat-verbs-conjugated">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Trophées débloqués :</span>
+            <strong id="stat-trophies-unlocked">0 / 8</strong>
+          </div>
+        </div>
+
+        <div class="astuce-box" style="margin-top: var(--space-lg);">
+          <strong style="color: var(--secondary);"><i data-lucide="lightbulb" style="width: 16px; height: 16px; vertical-align: middle;"></i> L'Astuce de Prof-Abdou :</strong>
+          <p id="hub-daily-quote" style="font-size: 0.85rem; margin-top: 4px; margin-bottom: 0;">
+            « Pour reconnaître le sujet d'un verbe, encadre-le toujours par "C'est ... qui" ou "Ce sont ... qui" ! »
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- TAB 2: TOURNIVERBE (CONJUGAISON) -->
+  <section id="tab-content-tourniverbe" class="tab-section" style="display: none;">
+    <div class="card card-sky">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Inspiré des rituels ardoise & Classe à deux</span>
+          <h2 class="headline">Le Tourniverbe de <em>Conjugaison</em></h2>
+          <p>Fais tourner les trois cylindres, identifie le pronom, le verbe et le temps, puis trouve la conjugaison exacte !</p>
+        </div>
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="btn btn-primary" onclick="spinAllWheels()">
+            <i data-lucide="dices" style="width: 18px; height: 18px;"></i> Faire tourner la roue !
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 Wheel Cylinders -->
+      <div class="grid-3" style="margin: var(--space-lg) 0;">
+        <div class="wheel-card">
+          <span class="label">Pronom Personnel</span>
+          <div class="wheel-slot" id="slot-pronoun">Nous</div>
+          <button class="btn btn-quiet btn-sm" onclick="spinSingleWheel('pronoun')">
+            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Changer
+          </button>
+        </div>
+
+        <div class="wheel-card">
+          <span class="label">Verbe à l'infinitif</span>
+          <div class="wheel-slot" id="slot-verb">Chanter (1er gr.)</div>
+          <button class="btn btn-quiet btn-sm" onclick="spinSingleWheel('verb')">
+            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Changer
+          </button>
+        </div>
+
+        <div class="wheel-card">
+          <span class="label">Temps de conjugaison</span>
+          <div class="wheel-slot" id="slot-tense">Présent</div>
+          <button class="btn btn-quiet btn-sm" onclick="spinSingleWheel('tense')">
+            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Changer
+          </button>
+        </div>
+      </div>
+
+      <!-- Challenge mode choice -->
+      <div id="tourniverbe-interactive-area" style="background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-lg);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-md);">
+          <h3 style="font-size: 1.15rem; margin: 0;">Conjugue le verbe demandé :</h3>
+          <div class="pill pill-grape" id="tourniverbe-timer-pill" style="display: none;">
+            <i data-lucide="timer" style="width: 14px; height: 14px;"></i> Ardoise : <span id="tourniverbe-countdown">15</span>s
+          </div>
+        </div>
+
+        <!-- 4 Multiple choice pills -->
+        <div class="quiz-options" id="tourniverbe-propositions">
+          <!-- Dynamic options -->
+        </div>
+
+        <!-- Feedback & teacher explanation -->
+        <div id="tourniverbe-feedback" class="astuce-box" style="display: none;"></div>
+
+        <!-- Slate button for projection -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-md);">
+          <button class="btn btn-secondary btn-sm" onclick="startSlateCountdown()">
+            <i data-lucide="hourglass" style="width: 16px; height: 16px;"></i> Lancer le chrono Ardoise (15 sec)
+          </button>
+          <button class="btn btn-tertiary btn-sm" onclick="revealTourniverbeAnswer()">
+            <i data-lucide="eye" style="width: 16px; height: 16px;"></i> Révéler la solution directement
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: MOTUS / MOT-MYSTÈRE (VOCABULAIRE) -->
+  <section id="tab-content-motus" class="tab-section" style="display: none;">
+    <div class="card card-grape">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Inspiré de Motminot & Éducajou</span>
+          <h2 class="headline">Le Mot-Mystère des <em>Lettres</em></h2>
+          <p>Devine le mot secret de la langue française en 6 essais maximum. Analyse les indices de couleurs !</p>
+        </div>
+        <div style="display: flex; gap: var(--space-sm); align-items: center;">
+          <span class="pill pill-bubblegum" id="motus-len-badge">Longueur : 5 lettres</span>
+          <button class="btn btn-primary btn-sm" onclick="startNewMotusGame()">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i> Nouveau mot
+          </button>
+        </div>
+      </div>
+
+      <!-- Color Legend -->
+      <div style="display: flex; justify-content: center; gap: var(--space-md); flex-wrap: wrap; margin: var(--space-sm) 0; font-size: 0.85rem;">
+        <span style="display: inline-flex; align-items: center; gap: 4px;">
+          <span style="width: 14px; height: 14px; border-radius: 4px; background: var(--primary);"></span> Bien placée
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;">
+          <span style="width: 14px; height: 14px; border-radius: 4px; background: var(--warning);"></span> Mal placée
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 4px;">
+          <span style="width: 14px; height: 14px; border-radius: 4px; background: var(--outline);"></span> Absente
+        </span>
+      </div>
+
+      <!-- Motus Board -->
+      <div class="motus-board" id="motus-board">
+        <!-- 6 rows of boxes created by JS -->
+      </div>
+
+      <!-- Hint box from Prof Abdou -->
+      <div style="max-width: 600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-quiet btn-sm" onclick="showMotusClue()">
+          <i data-lucide="help-circle" style="width: 16px; height: 16px;"></i> Demander l'indice de Prof-Abdou
+        </button>
+        <span id="motus-clue-text" style="font-weight: 600; color: var(--secondary); font-size: 0.9rem;"></span>
+      </div>
+
+      <!-- Virtual Keyboard -->
+      <div class="keyboard-container" id="motus-keyboard">
+        <!-- AZERTY rows generated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: ARÈNE DES HOMOPHONES & ACCORDS -->
+  <section id="tab-content-homophones" class="tab-section" style="display: none;">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Orthographe Grammaticale & Mnémotechnique</span>
+          <h2 class="headline">L'Arène des <em>Homophones</em> & Accords</h2>
+          <p>Déjoue les pièges classiques de la langue française avec les règles magiques de Prof-Abdou !</p>
+        </div>
+        <div class="pill pill-bubblegum" id="homophone-score-badge">
+          Série : 0 réussites
+        </div>
+      </div>
+
+      <div style="background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-lg); margin: var(--space-lg) 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-sm);">
+          <span class="pill pill-grape" id="homophone-category-tag">Homophones a / à</span>
+          <span class="pill pill-sky" id="homophone-level-tag">Cycle 2 & 3</span>
+        </div>
+
+        <div style="font-size: 1.35rem; font-weight: 700; margin: var(--space-lg) 0; color: var(--on-surface);" id="homophone-sentence-display">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="quiz-options" id="homophone-choices-grid">
+          <!-- Options -->
+        </div>
+
+        <div id="homophone-explanation" class="astuce-box" style="display: none;">
+          <!-- Feedback -->
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-primary" id="btn-next-homophone" onclick="loadNextHomophoneQuestion()" style="display: none;">
+          Question suivante <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </button>
+        <button class="btn btn-quiet" onclick="refreshHomophoneQuestion()">
+          <i data-lucide="shuffle" style="width: 16px; height: 16px;"></i> Changer de défi
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: ARCHITECTE DE PHRASES (SYNTAXE) -->
+  <section id="tab-content-syntaxe" class="tab-section" style="display: none;">
+    <div class="card card-sky">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Inspiré de Rapid'Etik & Parcours de phrases</span>
+          <h2 class="headline">L'Architecte de <em>Phrases</em></h2>
+          <p>Reconstitue la phrase désordonnée en remettant les étiquettes mobiles dans le bon ordre syntaxique.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="loadNextSentencePuzzle()">
+          <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i> Nouvelle phrase
+        </button>
+      </div>
+
+      <div style="margin: var(--space-lg) 0;">
+        <span class="label">Zone de construction (Ta phrase en cours) :</span>
+        <div class="phrase-tokens" id="sentence-target-zone">
+          <span style="color: var(--on-surface-variant); font-style: italic;">Clique sur les étiquettes ci-dessous pour composer la phrase...</span>
+        </div>
+      </div>
+
+      <div style="margin: var(--space-lg) 0;">
+        <span class="label">Étiquettes disponibles :</span>
+        <div class="phrase-tokens" id="sentence-source-zone">
+          <!-- Available tokens -->
+        </div>
+      </div>
+
+      <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-primary" onclick="verifySentenceOrder()">
+          <i data-lucide="check" style="width: 18px; height: 18px;"></i> Valider la phrase
+        </button>
+        <button class="btn btn-tertiary" onclick="resetSentenceTokens()">
+          <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i> Réinitialiser
+        </button>
+      </div>
+
+      <div id="sentence-feedback" class="astuce-box" style="display: none; margin-top: var(--space-md);"></div>
+    </div>
+  </section>
+
+  <!-- TAB 6: AGORA LITTÉRAIRE & FIGURES DE STYLE -->
+  <section id="tab-content-culture" class="tab-section" style="display: none;">
+    <div class="card card-grape">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Patrimoine littéraire, figures de style et étymologie</span>
+          <h2 class="headline">L'Agora <em>Littéraire</em> de Prof-Abdou</h2>
+          <p>Explore les chefs-d'œuvre de Molière, La Fontaine, Hugo, et maîtrise les figures de rhétorique !</p>
+        </div>
+        <div class="segmented" id="culture-subnav">
+          <button class="segmented-btn active" onclick="switchCultureMode('auteurs')">Auteurs & Œuvres</button>
+          <button class="segmented-btn" onclick="switchCultureMode('figures')">Figures de Style</button>
+          <button class="segmented-btn" onclick="switchCultureMode('etymo')">Étymologie</button>
+        </div>
+      </div>
+
+      <div style="background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-lg); margin: var(--space-lg) 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-xs);">
+          <span class="pill pill-grape" id="culture-card-tag">Grand Classique</span>
+          <span class="pill pill-bubblegum" id="culture-card-points">+10 Plumes d'or</span>
+        </div>
+
+        <h3 id="culture-question-title" style="font-size: 1.25rem; margin: var(--space-sm) 0;">Titre de la question culturelle</h3>
+        <p id="culture-question-quote" style="font-style: italic; background: var(--surface-container-low); padding: var(--space-md); border-radius: var(--rounded); border-left: 4px solid var(--primary); margin: var(--space-md) 0;">
+          Citation ou extrait d'œuvre
+        </p>
+        <p id="culture-question-prompt" style="font-weight: 700;">Consigne de l'exercice...</p>
+
+        <div class="quiz-options" id="culture-choices-box">
+          <!-- Options -->
+        </div>
+
+        <div id="culture-feedback" class="astuce-box" style="display: none;">
+          <!-- Dynamic pedagogical note -->
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn btn-primary" id="btn-next-culture" onclick="loadNextCultureQuestion()" style="display: none;">
+          Question suivante <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </button>
+        <button class="btn btn-quiet" onclick="refreshCultureQuestion()">
+          <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i> Autre défi littéraire
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 7: ESPACE ENSEIGNANT / VIDÉOPROJECTEUR (CLASSE ENTIÈRE) -->
+  <section id="tab-content-classe" class="tab-section" style="display: none;">
+    <div class="grid-2">
+      <!-- Outil 1: Rituel de la Phrase du Jour (Projection) -->
+      <div class="card">
+        <span class="label">Rituel de Grammaire à Projeter</span>
+        <h2 class="headline">La Phrase du Jour de <em>Prof-Abdou</em></h2>
+        <p>Projetez cette phrase au tableau. Demandez aux élèves d'écrire l'analyse sur leur ardoise, puis révélez chaque étape !</p>
+
+        <div style="background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-lg); margin: var(--space-md) 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+            <span class="pill pill-grape" id="pdj-cycle-pill">Cycle 3 / CM1-CM2</span>
+            <button class="btn btn-quiet btn-sm" onclick="generateNewPhraseDuJour()">
+              <i data-lucide="shuffle" style="width: 14px; height: 14px;"></i> Autre phrase
+            </button>
+          </div>
+
+          <div id="pdj-display-sentence" style="font-size: 1.4rem; font-weight: 900; line-height: 1.4; color: var(--on-surface); margin: var(--space-md) 0;">
+            « Dans la forêt profonde, le renard rusé observe silencieusement les oiseaux migrateurs. »
+          </div>
+
+          <!-- Revealed breakdown layers -->
+          <div style="display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-md);">
+            <div id="pdj-step-1" style="background: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded-full); display: flex; justify-content: space-between; align-items: center;">
+              <span>1. Sujet de la phrase :</span>
+              <strong id="pdj-ans-subject" style="color: var(--secondary);">[Caché]</strong>
+            </div>
+            <div id="pdj-step-2" style="background: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded-full); display: flex; justify-content: space-between; align-items: center;">
+              <span>2. Verbe conjugué (infinitif & temps) :</span>
+              <strong id="pdj-ans-verb" style="color: var(--primary);">[Caché]</strong>
+            </div>
+            <div id="pdj-step-3" style="background: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded-full); display: flex; justify-content: space-between; align-items: center;">
+              <span>3. Compléments & Nature :</span>
+              <strong id="pdj-ans-complements" style="color: var(--tertiary);">[Caché]</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" onclick="revealPhraseStep(1)">
+            Révéler Sujet
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="revealPhraseStep(2)">
+            Révéler Verbe
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="revealPhraseStep(3)">
+            Révéler Compléments
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="revealAllPhraseSteps()">
+            Tout révéler
+          </button>
+        </div>
+      </div>
+
+      <!-- Outil 2: Minuteur Ardoise & Tirage d'Équipe -->
+      <div class="card card-sky">
+        <span class="label">Gestion de Classe & Animation</span>
+        <h2 class="headline">Le Grand <em>Chrono</em> d'Ardoise</h2>
+        <p>Déclenchez un compte à rebours géant pour les exercices individuels ou le travail de groupe.</p>
+
+        <div style="text-align: center; background: var(--surface-container); border-radius: var(--rounded); padding: var(--space-lg); margin: var(--space-md) 0;">
+          <div id="classroom-timer-display" style="font-size: 3.5rem; font-weight: 900; color: var(--secondary); font-variant-numeric: tabular-nums;">
+            00:30
+          </div>
+          <div style="display: flex; justify-content: center; gap: var(--space-sm); margin-top: var(--space-md); flex-wrap: wrap;">
+            <button class="btn btn-tertiary btn-sm" onclick="setClassroomTimer(15)">15 sec</button>
+            <button class="btn btn-tertiary btn-sm" onclick="setClassroomTimer(30)">30 sec</button>
+            <button class="btn btn-tertiary btn-sm" onclick="setClassroomTimer(60)">1 min</button>
+            <button class="btn btn-tertiary btn-sm" onclick="setClassroomTimer(120)">2 min</button>
+          </div>
+          <div style="display: flex; justify-content: center; gap: var(--space-sm); margin-top: var(--space-md);">
+            <button class="btn btn-primary" id="btn-timer-toggle" onclick="togglePlayClassroomTimer()">
+              <i data-lucide="play" id="timer-play-icon" style="width: 18px; height: 18px;"></i>
+              <span id="timer-play-label">Démarrer</span>
+            </button>
+            <button class="btn btn-quiet" onclick="resetClassroomTimer()">
+              <i data-lucide="rotate-ccw" style="width: 16px; height: 16px;"></i> Réinitialiser
+            </button>
+          </div>
+        </div>
+
+        <!-- Tirage d'équipe littéraire -->
+        <div style="background: var(--surface-container-low); border: 2px dashed var(--outline-variant); border-radius: var(--rounded); padding: var(--space-md); margin-top: var(--space-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: var(--secondary);"><i data-lucide="users" style="width: 16px; height: 16px; vertical-align: middle;"></i> Tirage d'Équipe Littéraire :</strong>
+            <button class="btn btn-secondary btn-sm" onclick="pickRandomTeam()">Tirer au sort</button>
+          </div>
+          <div id="random-team-result" style="font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-top: var(--space-sm); text-align: center;">
+            Cliquez pour désigner l'équipe interrogée !
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 8: MON PALMARÈS & TROPHÉES -->
+  <section id="tab-content-trophies" class="tab-section" style="display: none;">
+    <div class="card card-grape">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+        <div>
+          <span class="label">Tableau d'Honneur & Distinctions</span>
+          <h2 class="headline">Le Palmarès de l'<em>Académie</em></h2>
+          <p>Chaque défi remporté vous rapproche du rang suprême d'Académicien de la Langue Française !</p>
+        </div>
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="btn btn-primary btn-sm" onclick="exportDiploma()">
+            <i data-lucide="download" style="width: 16px; height: 16px;"></i> Exporter mon Bilan
+          </button>
+          <button class="btn btn-quiet btn-sm" onclick="confirmResetProgress()">
+            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Réinitialiser
+          </button>
+        </div>
+      </div>
+
+      <!-- Trophies Grid -->
+      <div class="trophy-grid" id="trophy-cards-container" style="margin: var(--space-xl) 0;">
+        <!-- Dynamic Trophies -->
+      </div>
+
+      <!-- Pedagogy note / Attribution -->
+      <div class="astuce-box">
+        <strong style="color: var(--secondary);">Signature Pédagogique :</strong>
+        <p style="font-size: 0.85rem; margin-top: var(--space-xs); margin-bottom: 0;">
+          Conçu par <strong>Prof-Abdou</strong> pour dynamiser l'enseignement du français en primaire et collège. Inspiré des méthodes éprouvées : "40 jeux pédagogiques en français" (Caroline), "Activités rapides à projeter" (Classe à deux), "Educajou" et "MiCetF".
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Sound Controller & State Logic -->
+<api-shim></api-shim>
+<script>
+/* ========================================================================
+   1. SOUND & AUDIO SYNTHESIZER (VANILLA WEB AUDIO API)
+   ======================================================================== */
+const AudioSynth = {
+  ctx: null,
+  enabled: true,
+
+  init() {
+    if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  },
+
+  playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx) return;
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+      gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + duration);
+    } catch (e) {
+      // Audio fallback silent
+    }
+  },
+
+  playSuccess() {
+    this.playTone(523.25, 'triangle', 0.1, 0.12);
+    setTimeout(() => this.playTone(659.25, 'triangle', 0.1, 0.12), 100);
+    setTimeout(() => this.playTone(783.99, 'triangle', 0.25, 0.15), 200);
+  },
+
+  playError() {
+    this.playTone(220, 'sawtooth', 0.15, 0.1);
+    setTimeout(() => this.playTone(174.61, 'sawtooth', 0.25, 0.1), 120);
+  },
+
+  playPop() {
+    this.playTone(880, 'sine', 0.05, 0.08);
+  },
+
+  playChime() {
+    this.playTone(659.25, 'sine', 0.2, 0.1);
+    setTimeout(() => this.playTone(880, 'sine', 0.35, 0.12), 150);
+  },
+
+  playFanfare() {
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((freq, idx) => {
+      setTimeout(() => this.playTone(freq, 'triangle', 0.2, 0.15), idx * 100);
+    });
+  }
+};
+
+/* ========================================================================
+   2. APP STATE & PERSISTENCE
+   ======================================================================== */
+let appState = {
+  cycle: 'cycle3', // 'cycle2', 'cycle3', 'cycle4'
+  score: 0,
+  challengesCompleted: 0,
+  motusCompleted: 0,
+  verbsConjugated: 0,
+  trophies: {
+    first_game: false,
+    verb_master: false,
+    motus_ace: false,
+    homophone_guard: false,
+    syntax_builder: false,
+    culture_scholar: false,
+    gold_quill: false,
+    grand_academician: false
+  }
+};
+
+const TROPHIES_DEF = [
+  { id: 'first_game', title: 'Premier Pas', desc: 'Compléter une première activité dans l\'Académie', icon: 'award' },
+  { id: 'verb_master', title: 'Virtuose du Verbe', desc: 'Réussir 3 conjugaisons au Tourniverbe', icon: 'zap' },
+  { id: 'motus_ace', title: 'Maître du Mot-Mystère', desc: 'Trouver un Mot-Mystère en moins de 5 essais', icon: 'grid-3x3' },
+  { id: 'homophone_guard', title: 'Garde des Homophones', desc: 'Sans-faute sur une série d\'homophones', icon: 'check-circle' },
+  { id: 'syntax_builder', title: 'Architecte en Chef', desc: 'Reconstruire parfaitement une phrase complexe', icon: 'puzzle' },
+  { id: 'culture_scholar', title: 'Ami des Lettres', desc: 'Trouver 3 réponses à l\'Agora Littéraire', icon: 'book-open' },
+  { id: 'gold_quill', title: 'Plume d\'Or', desc: 'Atteindre un total de 50 Plumes d\'or', icon: 'feather' },
+  { id: 'grand_academician', title: 'Grand Académicien', desc: 'Atteindre 100 Plumes d\'or et débloquer 5 trophées', icon: 'crown' }
+];
+
+async function loadSavedState() {
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+      const saved = await window.notebookAppApi.getAppState();
+      if (saved && typeof saved === 'object') {
+        appState = Object.assign(appState, saved);
+      }
+    }
+  } catch (e) {
+    // state fallback to initial
+  }
+  updateUIFromState();
+}
+
+async function persistState() {
+  updateUIFromState();
+  checkTrophyUnlocks();
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+      await window.notebookAppApi.setAppState(appState);
+    }
+  } catch (e) {
+    // silently catch storage issues
+  }
+}
+
+function updateUIFromState() {
+  const scoreEl = document.getElementById('score-display');
+  if (scoreEl) scoreEl.textContent = appState.score;
+
+  const chalEl = document.getElementById('stat-challenges-completed');
+  if (chalEl) chalEl.textContent = appState.challengesCompleted;
+
+  const motusEl = document.getElementById('stat-motus-completed');
+  if (motusEl) motusEl.textContent = appState.motusCompleted;
+
+  const verbEl = document.getElementById('stat-verbs-conjugated');
+  if (verbEl) verbEl.textContent = appState.verbsConjugated;
+
+  // Compute Rank
+  let rank = 'Apprenti des Lettres';
+  let nextThreshold = 30;
+  if (appState.score >= 100) {
+    rank = 'Grand Académicien';
+    nextThreshold = 100;
+  } else if (appState.score >= 60) {
+    rank = 'Maître de la Langue';
+    nextThreshold = 100;
+  } else if (appState.score >= 30) {
+    rank = 'Explorateur Émérite';
+    nextThreshold = 60;
+  }
+
+  const rankEl = document.getElementById('rank-display');
+  if (rankEl) rankEl.textContent = rank;
+
+  const progText = document.getElementById('progress-text');
+  if (progText) progText.textContent = `${appState.score} / ${nextThreshold}`;
+
+  const progBar = document.getElementById('rank-progress-bar');
+  if (progBar) {
+    const pct = Math.min(100, Math.round((appState.score / nextThreshold) * 100));
+    progBar.style.width = `${pct}%`;
+  }
+
+  // Render Trophies
+  renderTrophiesView();
+}
+
+function checkTrophyUnlocks() {
+  let newlyUnlocked = false;
+
+  if (appState.challengesCompleted >= 1 && !appState.trophies.first_game) {
+    appState.trophies.first_game = true;
+    newlyUnlocked = true;
+  }
+  if (appState.verbsConjugated >= 3 && !appState.trophies.verb_master) {
+    appState.trophies.verb_master = true;
+    newlyUnlocked = true;
+  }
+  if (appState.motusCompleted >= 1 && !appState.trophies.motus_ace) {
+    appState.trophies.motus_ace = true;
+    newlyUnlocked = true;
+  }
+  if (appState.score >= 50 && !appState.trophies.gold_quill) {
+    appState.trophies.gold_quill = true;
+    newlyUnlocked = true;
+  }
+  if (appState.score >= 100 && !appState.trophies.grand_academician) {
+    appState.trophies.grand_academician = true;
+    newlyUnlocked = true;
+  }
+
+  if (newlyUnlocked) {
+    AudioSynth.playFanfare();
+    setProfSpeech(`Félicitations ! Tu as débloqué un nouveau trophée dans ton Palmarès ! Continue ainsi !`);
+  }
+}
+
+function setProfSpeech(msg) {
+  const speechEl = document.getElementById('prof-speech');
+  if (speechEl) {
+    speechEl.innerHTML = `<strong>Prof-Abdou :</strong> « ${msg} »`;
+  }
+}
+
+/* ========================================================================
+   3. GLOBAL CONTROLS (TABS, CYCLE, SOUND, PROJECTOR)
+   ======================================================================== */
+function switchTab(tabId) {
+  AudioSynth.playPop();
+  const tabs = ['hub', 'tourniverbe', 'motus', 'homophones', 'syntaxe', 'culture', 'classe', 'trophies'];
+  tabs.forEach(id => {
+    const sec = document.getElementById(`tab-content-${id}`);
+    const btn = document.getElementById(`tab-btn-${id}`);
+    if (sec) sec.style.display = (id === tabId) ? 'block' : 'none';
+    if (btn) {
+      if (id === tabId) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+      } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      }
+    }
+  });
+
+  if (tabId === 'tourniverbe' && !tourniverbeInitialized) {
+    initTourniverbe();
+  } else if (tabId === 'motus' && !motusInitialized) {
+    initMotus();
+  } else if (tabId === 'homophones' && !homophonesInitialized) {
+    initHomophones();
+  } else if (tabId === 'syntaxe' && !syntaxInitialized) {
+    initSyntaxe();
+  } else if (tabId === 'culture' && !cultureInitialized) {
+    initCulture();
+  } else if (tabId === 'classe' && !phraseDuJourInitialized) {
+    initPhraseDuJour();
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setCycleLevel(cycle) {
+  AudioSynth.playPop();
+  appState.cycle = cycle;
+  const segmented = document.getElementById('cycle-segmented');
+  if (segmented) {
+    const btns = segmented.querySelectorAll('.segmented-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    if (cycle === 'cycle2') btns[0].classList.add('active');
+    if (cycle === 'cycle3') btns[1].classList.add('active');
+    if (cycle === 'cycle4') btns[2].classList.add('active');
+  }
+
+  const cycleNames = {
+    cycle2: 'Cycle 2 (CP - CE1 - CE2 : Les Apprentis)',
+    cycle3: 'Cycle 3 (CM1 - CM2 : Les Explorateurs)',
+    cycle4: 'Cycle 4 (Collège 6e - 3e : Les Maîtres)'
+  };
+  setProfSpeech(`Niveau ajusté : ${cycleNames[cycle]}. Les exercices et défis sont désormais adaptés à tes connaissances !`);
+
+  // Refresh active games to adapt difficulty
+  generateNewDailyTrio();
+  if (tourniverbeInitialized) spinAllWheels();
+  if (motusInitialized) startNewMotusGame();
+  if (homophonesInitialized) refreshHomophoneQuestion();
+  if (syntaxInitialized) loadNextSentencePuzzle();
+  if (cultureInitialized) refreshCultureQuestion();
+  if (phraseDuJourInitialized) generateNewPhraseDuJour();
+
+  persistState();
+}
+
+function toggleSound() {
+  AudioSynth.enabled = !AudioSynth.enabled;
+  const label = document.getElementById('sound-status-label');
+  const icon = document.getElementById('sound-icon');
+  if (AudioSynth.enabled) {
+    if (label) label.textContent = 'Son : Oui';
+    if (icon) icon.setAttribute('data-lucide', 'volume-2');
+    AudioSynth.playTone(440, 'sine', 0.1, 0.1);
+  } else {
+    if (label) label.textContent = 'Son : Non';
+    if (icon) icon.setAttribute('data-lucide', 'volume-x');
+  }
+  lucide.createIcons();
+}
+
+function toggleProjectorMode() {
+  document.body.classList.toggle('projector-mode');
+  const isProj = document.body.classList.contains('projector-mode');
+  const label = document.getElementById('proj-status-label');
+  if (label) label.textContent = isProj ? 'Mode Normal' : 'Mode Ardoise / Classe';
+  AudioSynth.playChime();
+  setProfSpeech(isProj ? 'Mode Vidéoprojecteur activé ! Texte agrandi et contraste adapté pour un affichage sur le tableau de la classe.' : 'Retour au mode individuel.');
+}
+
+/* ========================================================================
+   4. MODULE: LE DÉFI DU JOUR (HUB)
+   ======================================================================== */
+const DAILY_QUESTIONS_DB = {
+  cycle2: [
+    {
+      theme: 'Orthographe',
+      q: 'Quel mot s\'écrit avec la lettre finale muette "t" ?',
+      options: ['Un cha...', 'Un dra...', 'Un sac...'],
+      correct: 0,
+      answerWord: 'Un chat (car on peut dire chatte au féminin !)',
+      astuce: 'Pour trouver la lettre muette d\'un mot, mets-le au féminin (chat -> chatte).'
+    },
+    {
+      theme: 'Grammaire',
+      q: 'Dans la phrase "Le petit chien dort sous la table.", quel est le verbe ?',
+      options: ['chien', 'dort', 'table'],
+      correct: 1,
+      answerWord: 'dort',
+      astuce: 'Le verbe indique l\'action ou l\'état. Que fait le chien ? Il dort !'
+    },
+    {
+      theme: 'Vocabulaire',
+      q: 'Quel est le contraire (antonyme) de "rapide" ?',
+      options: ['vite', 'lent', 'agile'],
+      correct: 1,
+      answerWord: 'lent',
+      astuce: 'Le mot opposé à rapide est lent (comme une tortue).'
+    }
+  ],
+  cycle3: [
+    {
+      theme: 'Orthographe',
+      q: 'Complète la phrase : "Marie ... donné son livre ... son frère."',
+      options: ['a / à', 'à / a', 'as / à', 'a / as'],
+      correct: 0,
+      answerWord: 'a / à',
+      astuce: 'Remplace par "avait" : Marie avait donné son livre. Le premier est donc "a" sans accent, le second est "à" avec accent.'
+    },
+    {
+      theme: 'Grammaire',
+      q: 'Dans "Les oiseaux migrateurs construisent un nid.", quelle est la fonction de "un nid" ?',
+      options: ['Sujet', 'Complément d\'Objet Direct (COD)', 'Complément Circonstanciel de Lieu'],
+      correct: 1,
+      answerWord: 'Complément d\'Objet Direct (COD)',
+      astuce: 'Pose la question : Les oiseaux construisent quoi ? -> Un nid (COD).'
+    },
+    {
+      theme: 'Conjugaison',
+      q: 'Conjugue le verbe "prendre" au futur simple avec le pronom "Nous" :',
+      options: ['Nous prenions', 'Nous prendrons', 'Nous prendrions'],
+      correct: 1,
+      answerWord: 'Nous prendrons',
+      astuce: 'Au futur simple, la terminaison avec "nous" est toujours -ons sur le radical prendr-.'
+    }
+  ],
+  cycle4: [
+    {
+      theme: 'Figures de style',
+      q: 'Quelle figure de style apparaît dans : "Cette obscure clarté qui tombe des étoiles" (Corneille) ?',
+      options: ['Une métaphore', 'Un oxymore', 'Une anaphore'],
+      correct: 1,
+      answerWord: 'Un oxymore',
+      astuce: 'Un oxymore réunit deux mots de sens opposés dans un même groupe (obscure clarté).'
+    },
+    {
+      theme: 'Orthographe experte',
+      q: 'Quelle phrase présente un accord correct du participe passé ?',
+      options: [
+        'Les lettres qu\'il a envoyé sont arrivées.',
+        'Les lettres qu\'il a envoyées sont arrivées.',
+        'Les lettres qu\'il a envoyés sont arrivées.'
+      ],
+      correct: 1,
+      answerWord: 'Les lettres qu\'il a envoyées...',
+      astuce: 'Avec l\'auxiliaire avoir, le participe passé s\'accorde avec le COD s\'il est placé avant le verbe ("qu\'" mis pour "les lettres", féminin pluriel).'
+    },
+    {
+      theme: 'Étymologie',
+      q: 'Que signifie la racine grecque "chrono" dans "chronomètre" ou "chronologie" ?',
+      options: ['La vitesse', 'Le temps', 'La mesure'],
+      correct: 1,
+      answerWord: 'Le temps (du grec ancien Khronos)',
+      astuce: 'Khronos désignait la personnification du temps dans la mythologie grecque.'
+    }
+  ]
+};
+
+let currentDailyIndex = 0;
+let dailyQuestionsList = [];
+
+function initDailyChallenge() {
+  generateNewDailyTrio();
+}
+
+function generateNewDailyTrio() {
+  const pool = DAILY_QUESTIONS_DB[appState.cycle] || DAILY_QUESTIONS_DB.cycle3;
+  dailyQuestionsList = [...pool];
+  currentDailyIndex = 0;
+  renderDailyQuestion();
+}
+
+function renderDailyQuestion() {
+  const qData = dailyQuestionsList[currentDailyIndex];
+  if (!qData) return;
+
+  const stepPill = document.getElementById('daily-step-pill');
+  if (stepPill) stepPill.textContent = `Question ${currentDailyIndex + 1} sur ${dailyQuestionsList.length}`;
+
+  const themePill = document.getElementById('daily-theme-pill');
+  if (themePill) themePill.textContent = qData.theme;
+
+  const qText = document.getElementById('daily-question-text');
+  if (qText) qText.textContent = qData.q;
+
+  const optBox = document.getElementById('daily-options-box');
+  if (!optBox) return;
+  optBox.innerHTML = '';
+
+  const fbBox = document.getElementById('daily-feedback-box');
+  if (fbBox) fbBox.style.display = 'none';
+
+  const nextBtn = document.getElementById('btn-next-daily');
+  if (nextBtn) nextBtn.style.display = 'none';
+
+  qData.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.innerHTML = `<span style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-container-high); display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800;">${String.fromCharCode(65 + idx)}</span> <span>${opt}</span>`;
+    btn.onclick = function() {
+      handleDailyAnswer(idx, btn);
+    };
+    optBox.appendChild(btn);
+  });
+}
+
+function handleDailyAnswer(chosenIdx, clickedBtn) {
+  const qData = dailyQuestionsList[currentDailyIndex];
+  if (!qData) return;
+
+  const optBox = document.getElementById('daily-options-box');
+  if (!optBox) return;
+  const buttons = optBox.querySelectorAll('.quiz-opt-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const fbBox = document.getElementById('daily-feedback-box');
+  const nextBtn = document.getElementById('btn-next-daily');
+
+  if (chosenIdx === qData.correct) {
+    clickedBtn.classList.add('correct');
+    AudioSynth.playSuccess();
+    appState.score += 5;
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--positive);">Excellent !</strong> Bonne réponse : <em>${qData.answerWord}</em>.<br><small style="color: var(--on-surface-variant);">${qData.astuce}</small>`;
+    }
+  } else {
+    clickedBtn.classList.add('wrong');
+    buttons[qData.correct].classList.add('correct');
+    AudioSynth.playError();
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--error);">Pas tout à fait !</strong> La bonne réponse était : <em>${qData.answerWord}</em>.<br><small style="color: var(--on-surface-variant);">${qData.astuce}</small>`;
+    }
+  }
+
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
+  persistState();
+}
+
+function nextDailyQuestion() {
+  currentDailyIndex++;
+  if (currentDailyIndex < dailyQuestionsList.length) {
+    renderDailyQuestion();
+  } else {
+    // Challenge complete!
+    appState.challengesCompleted++;
+    appState.score += 10;
+    AudioSynth.playFanfare();
+    setProfSpeech(`Bravo ! Tu as achevé le Défi Éclair avec panache ! +10 Plumes d'or bonus ajoutées à ton carnet.`);
+    persistState();
+
+    const optBox = document.getElementById('daily-options-box');
+    if (optBox) {
+      optBox.innerHTML = `
+        <div style="text-align: center; padding: var(--space-md); grid-column: 1 / -1;">
+          <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--primary); margin: 0 auto;"></i>
+          <h4 style="margin-top: var(--space-sm);">Défi du jour terminé avec succès !</h4>
+          <p style="color: var(--on-surface-variant);">Reviens t'entraîner sur un autre module ou tire un nouveau trio de questions.</p>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+    const nextBtn = document.getElementById('btn-next-daily');
+    if (nextBtn) nextBtn.style.display = 'none';
+  }
+}
+
+/* ========================================================================
+   5. MODULE: TOURNIVERBE (CONJUGAISON EN ROUE)
+   ======================================================================== */
+let tourniverbeInitialized = false;
+
+const VERBS_DATABASE = [
+  {
+    inf: 'Chanter (1er gr.)',
+    forms: {
+      present: { 'Je': 'chante', 'Tu': 'chantes', 'Il / Elle': 'chante', 'Nous': 'chantons', 'Vous': 'chantez', 'Ils / Elles': 'chantent' },
+      imparfait: { 'Je': 'chantais', 'Tu': 'chantais', 'Il / Elle': 'chantait', 'Nous': 'chantions', 'Vous': 'chantiez', 'Ils / Elles': 'chantaient' },
+      futur: { 'Je': 'chanterai', 'Tu': 'chanteras', 'Il / Elle': 'chantera', 'Nous': 'chanterons', 'Vous': 'chanterez', 'Ils / Elles': 'chanteront' },
+      passe_compose: { 'Je': 'ai chanté', 'Tu': 'as chanté', 'Il / Elle': 'a chanté', 'Nous': 'avons chanté', 'Vous': 'avez chanté', 'Ils / Elles': 'ont chanté' }
+    }
+  },
+  {
+    inf: 'Finir (2e gr.)',
+    forms: {
+      present: { 'Je': 'finis', 'Tu': 'finis', 'Il / Elle': 'finit', 'Nous': 'finissons', 'Vous': 'finissez', 'Ils / Elles': 'finissent' },
+      imparfait: { 'Je': 'finissais', 'Tu': 'finissais', 'Il / Elle': 'finissait', 'Nous': 'finissions', 'Vous': 'finissiez', 'Ils / Elles': 'finissaient' },
+      futur: { 'Je': 'finirai', 'Tu': 'finiras', 'Il / Elle': 'finira', 'Nous': 'finirons', 'Vous': 'finirez', 'Ils / Elles': 'finiront' },
+      passe_compose: { 'Je': 'ai fini', 'Tu': 'as fini', 'Il / Elle': 'a fini', 'Nous': 'avons fini', 'Vous': 'avez fini', 'Ils / Elles': 'ont fini' }
+    }
+  },
+  {
+    inf: 'Être (auxiliaire)',
+    forms: {
+      present: { 'Je': 'suis', 'Tu': 'es', 'Il / Elle': 'est', 'Nous': 'sommes', 'Vous': 'êtes', 'Ils / Elles': 'sont' },
+      imparfait: { 'Je': 'étais', 'Tu': 'étais', 'Il / Elle': 'était', 'Nous': 'étions', 'Vous': 'étiez', 'Ils / Elles': 'étaient' },
+      futur: { 'Je': 'serai', 'Tu': 'seras', 'Il / Elle': 'sera', 'Nous': 'serons', 'Vous': 'serez', 'Ils / Elles': 'seront' },
+      passe_compose: { 'Je': 'ai été', 'Tu': 'as été', 'Il / Elle': 'a été', 'Nous': 'avons été', 'Vous': 'avez été', 'Ils / Elles': 'ont été' }
+    }
+  },
+  {
+    inf: 'Avoir (auxiliaire)',
+    forms: {
+      present: { 'Je': 'ai', 'Tu': 'as', 'Il / Elle': 'a', 'Nous': 'avons', 'Vous': 'avez', 'Ils / Elles': 'ont' },
+      imparfait: { 'Je': 'avais', 'Tu': 'avais', 'Il / Elle': 'avait', 'Nous': 'avions', 'Vous': 'aviez', 'Ils / Elles': 'avaient' },
+      futur: { 'Je': 'aurai', 'Tu': 'auras', 'Il / Elle': 'aura', 'Nous': 'aurons', 'Vous': 'aurez', 'Ils / Elles': 'auront' },
+      passe_compose: { 'Je': 'ai eu', 'Tu': 'as eu', 'Il / Elle': 'a eu', 'Nous': 'avons eu', 'Vous': 'avez eu', 'Ils / Elles': 'ont eu' }
+    }
+  },
+  {
+    inf: 'Faire (3e gr.)',
+    forms: {
+      present: { 'Je': 'fais', 'Tu': 'fais', 'Il / Elle': 'fait', 'Nous': 'faisons', 'Vous': 'faites', 'Ils / Elles': 'font' },
+      imparfait: { 'Je': 'faisais', 'Tu': 'faisais', 'Il / Elle': 'faisait', 'Nous': 'faisions', 'Vous': 'faisiez', 'Ils / Elles': 'faisaient' },
+      futur: { 'Je': 'ferai', 'Tu': 'feras', 'Il / Elle': 'fera', 'Nous': 'ferons', 'Vous': 'ferez', 'Ils / Elles': 'feront' },
+      passe_compose: { 'Je': 'ai fait', 'Tu': 'as fait', 'Il / Elle': 'a fait', 'Nous': 'avons fait', 'Vous': 'avez fait', 'Ils / Elles': 'ont fait' }
+    }
+  },
+  {
+    inf: 'Prendre (3e gr.)',
+    forms: {
+      present: { 'Je': 'prends', 'Tu': 'prends', 'Il / Elle': 'prend', 'Nous': 'prenons', 'Vous': 'prenez', 'Ils / Elles': 'prennent' },
+      imparfait: { 'Je': 'prenais', 'Tu': 'prenais', 'Il / Elle': 'prenait', 'Nous': 'prenions', 'Vous': 'preniez', 'Ils / Elles': 'prenaient' },
+      futur: { 'Je': 'prendrai', 'Tu': 'prendras', 'Il / Elle': 'prendra', 'Nous': 'prendrons', 'Vous': 'prendrez', 'Ils / Elles': 'prendront' },
+      passe_compose: { 'Je': 'ai pris', 'Tu': 'as pris', 'Il / Elle': 'a pris', 'Nous': 'avons pris', 'Vous': 'avez pris', 'Ils / Elles': 'ont pris' }
+    }
+  }
+];
+
+const PRONOUNS = ['Je', 'Tu', 'Il / Elle', 'Nous', 'Vous', 'Ils / Elles'];
+
+let curPronoun = 'Nous';
+let curVerbObj = VERBS_DATABASE[0];
+let curTenseKey = 'present';
+let tourniverbeTimerId = null;
+
+function initTourniverbe() {
+  tourniverbeInitialized = true;
+  spinAllWheels();
+}
+
+function getAvailableTenses() {
+  if (appState.cycle === 'cycle2') {
+    return [{ key: 'present', label: 'Présent' }];
+  } else if (appState.cycle === 'cycle3') {
+    return [
+      { key: 'present', label: 'Présent' },
+      { key: 'imparfait', label: 'Imparfait' },
+      { key: 'futur', label: 'Futur simple' },
+      { key: 'passe_compose', label: 'Passé composé' }
+    ];
+  } else {
+    return [
+      { key: 'present', label: 'Présent' },
+      { key: 'imparfait', label: 'Imparfait' },
+      { key: 'futur', label: 'Futur simple' },
+      { key: 'passe_compose', label: 'Passé composé' }
+    ];
+  }
+}
+
+function spinAllWheels() {
+  AudioSynth.playPop();
+  spinSingleWheel('pronoun', false);
+  spinSingleWheel('verb', false);
+  spinSingleWheel('tense', false);
+  updateTourniverbeQuestion();
+}
+
+function spinSingleWheel(type, shouldUpdate = true) {
+  if (type === 'pronoun') {
+    curPronoun = PRONOUNS[Math.floor(Math.random() * PRONOUNS.length)];
+    const el = document.getElementById('slot-pronoun');
+    if (el) el.textContent = curPronoun;
+  } else if (type === 'verb') {
+    curVerbObj = VERBS_DATABASE[Math.floor(Math.random() * VERBS_DATABASE.length)];
+    const el = document.getElementById('slot-verb');
+    if (el) el.textContent = curVerbObj.inf;
+  } else if (type === 'tense') {
+    const tenses = getAvailableTenses();
+    const chosen = tenses[Math.floor(Math.random() * tenses.length)];
+    curTenseKey = chosen.key;
+    const el = document.getElementById('slot-tense');
+    if (el) el.textContent = chosen.label;
+  }
+  if (shouldUpdate) {
+    AudioSynth.playPop();
+    updateTourniverbeQuestion();
+  }
+}
+
+function getCorrectVerbForm() {
+  const tenseMap = curVerbObj.forms[curTenseKey] || curVerbObj.forms.present;
+  return tenseMap[curPronoun] || 'forme';
+}
+
+function updateTourniverbeQuestion() {
+  const correct = getCorrectVerbForm();
+  const propBox = document.getElementById('tourniverbe-propositions');
+  const fbBox = document.getElementById('tourniverbe-feedback');
+  if (fbBox) fbBox.style.display = 'none';
+
+  if (!propBox) return;
+  propBox.innerHTML = '';
+
+  // Generate 3 plausible distractors
+  const distractors = new Set();
+  // from other pronouns in same tense
+  const tenseMap = curVerbObj.forms[curTenseKey] || curVerbObj.forms.present;
+  Object.values(tenseMap).forEach(v => {
+    if (v !== correct) distractors.add(v);
+  });
+  // fallback tweaks
+  if (distractors.size < 3) {
+    distractors.add(correct + 's');
+    distractors.add(correct + 'ent');
+    distractors.add(correct.replace(/e$/, 'ons'));
+  }
+
+  const distArr = Array.from(distractors).slice(0, 3);
+  const allChoices = [correct, ...distArr].sort(() => Math.random() - 0.5);
+
+  allChoices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.innerHTML = `<i data-lucide="pen-tool" style="width: 16px; height: 16px; color: var(--secondary);"></i> <strong>${curPronoun} ${choice}</strong>`;
+    btn.onclick = function() {
+      handleTourniverbeAnswer(choice, btn, correct);
+    };
+    propBox.appendChild(btn);
+  });
+  lucide.createIcons();
+}
+
+function handleTourniverbeAnswer(choice, btn, correct) {
+  const propBox = document.getElementById('tourniverbe-propositions');
+  if (propBox) {
+    propBox.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+  }
+  const fbBox = document.getElementById('tourniverbe-feedback');
+
+  if (choice === correct) {
+    btn.classList.add('correct');
+    AudioSynth.playSuccess();
+    appState.score += 5;
+    appState.verbsConjugated++;
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--positive);">Parfaitement conjugué !</strong> La forme exacte est bien : <em>« ${curPronoun} ${correct} »</em>.<br><small>Règle : Observez la terminaison spécifique de <em>${curPronoun}</em> pour ce temps.</small>`;
+    }
+  } else {
+    btn.classList.add('wrong');
+    AudioSynth.playError();
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--error);">Attention à la terminaison !</strong> La bonne conjugaison était : <em>« ${curPronoun} ${correct} »</em>.`;
+    }
+  }
+  persistState();
+}
+
+function revealTourniverbeAnswer() {
+  const correct = getCorrectVerbForm();
+  const fbBox = document.getElementById('tourniverbe-feedback');
+  if (fbBox) {
+    fbBox.style.display = 'block';
+    fbBox.innerHTML = `<strong>Solution affichée :</strong> <em>« ${curPronoun} ${correct} »</em>.`;
+  }
+}
+
+function startSlateCountdown() {
+  const pill = document.getElementById('tourniverbe-timer-pill');
+  const countEl = document.getElementById('tourniverbe-countdown');
+  if (!pill || !countEl) return;
+
+  pill.style.display = 'inline-flex';
+  let left = 15;
+  countEl.textContent = left;
+  AudioSynth.playChime();
+
+  if (tourniverbeTimerId) clearInterval(tourniverbeTimerId);
+  tourniverbeTimerId = setInterval(() => {
+    left--;
+    countEl.textContent = left;
+    if (left <= 3 && left > 0) {
+      AudioSynth.playTone(440, 'sine', 0.1, 0.08);
+    }
+    if (left <= 0) {
+      clearInterval(tourniverbeTimerId);
+      AudioSynth.playTone(880, 'triangle', 0.4, 0.2);
+      revealTourniverbeAnswer();
+      setProfSpeech('Le temps est écoulé ! Levez vos ardoises en classe ! Vérifions ensemble la terminaison.');
+    }
+  }, 1000);
+}
+
+/* ========================================================================
+   6. MODULE: LE MOT-MYSTÈRE (MOTUS VOCABULAIRE)
+   ======================================================================== */
+let motusInitialized = false;
+
+const MOTUS_WORDS = {
+  cycle2: [
+    { word: 'LIVRE', clue: 'Objet rempli de pages reliées que l\'on lit avec plaisir.' },
+    { word: 'PORTE', clue: 'Ouverture qui permet d\'entrer ou sortir d\'une pièce.' },
+    { word: 'TABLE', clue: 'Meuble sur lequel on pose ses cahiers ou son assiette.' },
+    { word: 'POMME', clue: 'Fruit rond et croquant qui pousse sur le pommier.' },
+    { word: 'PLUME', clue: 'Ce qui recouvre le corps des oiseaux et servait jadis à écrire.' }
+  ],
+  cycle3: [
+    { word: 'SOLEIL', clue: 'Astre lumineux qui réchauffe notre planète Terre.' },
+    { word: 'VOYAGE', clue: 'Déplacement que l\'on fait vers un lieu lointain pour explorer.' },
+    { word: 'CAHIER', clue: 'Support en papier où l\'écolier rédige ses leçons et devoirs.' },
+    { word: 'OISEAU', clue: 'Animal vertébré pourvu d\'ailes et d\'un bec.' },
+    { word: 'SOURCE', clue: 'Point d\'eau vive qui jaillit naturellement de la terre.' }
+  ],
+  cycle4: [
+    { word: 'THEATRE', clue: 'Art du spectacle où des comédiens incarnent des personnages sur scène.' },
+    { word: 'MYSTERE', clue: 'Chose secrète, énigmatique et difficile à expliquer.' },
+    { word: 'BALLADE', clue: 'Forme de poème médiéval ou promenade poétique.' },
+    { word: 'DISCOUR', clue: 'Développement oratoire prononcé devant un public.' },
+    { word: 'CRITIQU', clue: 'Examen attentif et jugement raisonné d\'une œuvre.' }
+  ]
+};
+
+let currentMotusObj = null;
+let motusGuesses = [];
+let currentGuess = '';
+const MAX_GUESSES = 6;
+
+function initMotus() {
+  motusInitialized = true;
+  buildKeyboard();
+  startNewMotusGame();
+}
+
+function startNewMotusGame() {
+  const pool = MOTUS_WORDS[appState.cycle] || MOTUS_WORDS.cycle3;
+  currentMotusObj = pool[Math.floor(Math.random() * pool.length)];
+  motusGuesses = [];
+  currentGuess = currentMotusObj.word[0]; // Reveal first letter by default like Motus
+
+  const lenBadge = document.getElementById('motus-len-badge');
+  if (lenBadge) lenBadge.textContent = `Longueur : ${currentMotusObj.word.length} lettres`;
+
+  const clueEl = document.getElementById('motus-clue-text');
+  if (clueEl) clueEl.textContent = '';
+
+  renderMotusGrid();
+  resetKeyboardColors();
+}
+
+function renderMotusGrid() {
+  const board = document.getElementById('motus-board');
+  if (!board || !currentMotusObj) return;
+  board.innerHTML = '';
+
+  const wordLen = currentMotusObj.word.length;
+
+  for (let r = 0; r < MAX_GUESSES; r++) {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'motus-row';
+
+    const rowGuess = motusGuesses[r];
+
+    for (let c = 0; c < wordLen; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'motus-cell';
+
+      if (rowGuess) {
+        cell.textContent = rowGuess.word[c];
+        cell.classList.add(rowGuess.states[c]);
+      } else if (r === motusGuesses.length) {
+        cell.textContent = currentGuess[c] || '.';
+      } else if (c === 0) {
+        cell.textContent = currentMotusObj.word[0];
+      } else {
+        cell.textContent = '.';
+      }
+
+      rowEl.appendChild(cell);
+    }
+    board.appendChild(rowEl);
+  }
+}
+
+function handleKeyInput(char) {
+  if (!currentMotusObj || motusGuesses.length >= MAX_GUESSES) return;
+
+  if (char === 'ENTER') {
+    submitGuess();
+    return;
+  }
+  if (char === 'BACK') {
+    if (currentGuess.length > 1) { // keep first letter
+      currentGuess = currentGuess.slice(0, -1);
+      AudioSynth.playPop();
+      renderMotusGrid();
+    }
+    return;
+  }
+
+  if (currentGuess.length < currentMotusObj.word.length) {
+    currentGuess += char;
+    AudioSynth.playPop();
+    renderMotusGrid();
+  }
+}
+
+function submitGuess() {
+  if (currentGuess.length < currentMotusObj.word.length) {
+    AudioSynth.playError();
+    setProfSpeech(`Le mot doit comporter exactement ${currentMotusObj.word.length} lettres !`);
+    return;
+  }
+
+  const target = currentMotusObj.word;
+  const guess = currentGuess.toUpperCase();
+  const states = new Array(target.length).fill('absent');
+
+  const targetLetters = target.split('');
+  const guessLetters = guess.split('');
+
+  // 1st pass: Correct letters
+  for (let i = 0; i < target.length; i++) {
+    if (guessLetters[i] === targetLetters[i]) {
+      states[i] = 'correct';
+      targetLetters[i] = null;
+      guessLetters[i] = null;
+    }
+  }
+
+  // 2nd pass: Misplaced letters
+  for (let i = 0; i < target.length; i++) {
+    if (guessLetters[i] && targetLetters.includes(guessLetters[i])) {
+      states[i] = 'misplaced';
+      const matchIdx = targetLetters.indexOf(guessLetters[i]);
+      targetLetters[matchIdx] = null;
+    }
+  }
+
+  motusGuesses.push({ word: guess, states });
+  updateKeyboardWithStates(guess, states);
+
+  if (guess === target) {
+    AudioSynth.playFanfare();
+    appState.score += 15;
+    appState.motusCompleted++;
+    setProfSpeech(`BINGO ! Tu as trouvé le mot mystère « ${target} » en ${motusGuesses.length} essai(s) ! Bravo champion !`);
+    persistState();
+  } else if (motusGuesses.length >= MAX_GUESSES) {
+    AudioSynth.playError();
+    setProfSpeech(`Dommage ! Le mot secret était « ${target} ». Découvre son indice et réessaie avec un nouveau mot !`);
+    showMotusClue();
+  } else {
+    AudioSynth.playTone(480, 'triangle', 0.1, 0.1);
+    currentGuess = target[0]; // reset with first letter
+  }
+
+  renderMotusGrid();
+}
+
+function showMotusClue() {
+  if (!currentMotusObj) return;
+  const clueEl = document.getElementById('motus-clue-text');
+  if (clueEl) {
+    clueEl.textContent = `Indice de Prof-Abdou : ${currentMotusObj.clue}`;
+    AudioSynth.playChime();
+  }
+}
+
+function buildKeyboard() {
+  const kb = document.getElementById('motus-keyboard');
+  if (!kb) return;
+  kb.innerHTML = '';
+
+  const rows = [
+    ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
+    ['BACK', 'W', 'X', 'C', 'V', 'B', 'N', 'ENTER']
+  ];
+
+  rows.forEach(r => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'keyboard-row';
+    r.forEach(k => {
+      const btn = document.createElement('button');
+      btn.className = 'key-btn';
+      btn.dataset.key = k;
+      if (k === 'ENTER') {
+        btn.innerHTML = '<strong>Entrée</strong>';
+      } else if (k === 'BACK') {
+        btn.innerHTML = '<strong>⌫</strong>';
+      } else {
+        btn.textContent = k;
+      }
+      btn.onclick = () => handleKeyInput(k);
+      rowDiv.appendChild(btn);
+    });
+    kb.appendChild(rowDiv);
+  });
+}
+
+function updateKeyboardWithStates(guess, states) {
+  states.forEach((st, idx) => {
+    const char = guess[idx];
+    const keyBtn = document.querySelector(`.key-btn[data-key="${char}"]`);
+    if (keyBtn) {
+      if (st === 'correct') {
+        keyBtn.className = 'key-btn key-correct';
+      } else if (st === 'misplaced' && !keyBtn.classList.contains('key-correct')) {
+        keyBtn.className = 'key-btn key-misplaced';
+      } else if (st === 'absent' && !keyBtn.classList.contains('key-correct') && !keyBtn.classList.contains('key-misplaced')) {
+        keyBtn.className = 'key-btn key-absent';
+      }
+    }
+  });
+}
+
+function resetKeyboardColors() {
+  document.querySelectorAll('.key-btn').forEach(btn => {
+    btn.className = 'key-btn';
+  });
+}
+
+/* ========================================================================
+   7. MODULE: L'ARÈNE DES HOMOPHONES & ACCORDS
+   ======================================================================== */
+let homophonesInitialized = false;
+let currentHomophoneIdx = 0;
+let homophoneStreak = 0;
+
+const HOMOPHONES_DB = [
+  {
+    category: 'a / à',
+    levels: ['cycle2', 'cycle3'],
+    sentence: 'Le professeur de français [ ... ] apporté des dictionnaires [ ... ] la bibliothèque.',
+    choices: ['a / à', 'à / a', 'a / a', 'à / à'],
+    correct: 0,
+    rule: 'On écrit "a" (verbe avoir) si on peut le remplacer par "avait". On écrit "à" (préposition avec accent) s\'il n\'est pas remplaçable par "avait".'
+  },
+  {
+    category: 'et / est',
+    levels: ['cycle2', 'cycle3'],
+    sentence: 'Ce roman policier [ ... ] captivant [ ... ] plein de rebondissements.',
+    choices: ['est / et', 'et / est', 'est / est', 'et / et'],
+    correct: 0,
+    rule: 'On écrit "est" (verbe être) si on peut dire "était". On écrit "et" (conjonction de coordination) quand on peut le remplacer par "et puis".'
+  },
+  {
+    category: 'son / sont',
+    levels: ['cycle2', 'cycle3'],
+    sentence: 'Tous les élèves [ ... ] assis en silence et écoutent [ ... ] exposé.',
+    choices: ['sont / son', 'son / sont', 'sont / sont', 'son / son'],
+    correct: 0,
+    rule: '"Sont" est le verbe être au présent (remplaçable par "étaient"). "Son" est un déterminant possessif (remplaçable par "mon" ou "ton").'
+  },
+  {
+    category: 'on / ont',
+    levels: ['cycle2', 'cycle3'],
+    sentence: 'Les acteurs [ ... ] terminé la pièce et [ ... ] les applaudit chaleureusement.',
+    choices: ['ont / on', 'on / ont', 'ont / ont', 'on / on'],
+    correct: 0,
+    rule: '"Ont" est le verbe avoir (remplaçable par "avaient"). "On" est un pronom personnel sujet (remplaçable par "il" ou "elle").'
+  },
+  {
+    category: 'ce / se',
+    levels: ['cycle3', 'cycle4'],
+    sentence: '[ ... ] matin, le jeune chevalier [ ... ] prépare pour le grand tournoi.',
+    choices: ['Ce / se', 'Se / ce', 'Ce / ce', 'Se / se'],
+    correct: 0,
+    rule: '"Ce" est un déterminant démonstratif placé devant un nom ("ce matin"). "Se" est un pronom réfléchi placé devant un verbe ("se préparer").'
+  },
+  {
+    category: 'ces / ses / c\'est / s\'est',
+    levels: ['cycle3', 'cycle4'],
+    sentence: '[ ... ] un chef-d\'œuvre ! L\'auteur a réuni toutes [ ... ] pensées intimes.',
+    choices: ['C\'est / ses', 'S\'est / ces', 'C\'est / ces', 'Ses / c\'est'],
+    correct: 0,
+    rule: '"C\'est" équivaut à "cela est". "Ses" est un possessif indiquant les siennes ("ses pensées").'
+  },
+  {
+    category: 'Accord participe passé',
+    levels: ['cycle3', 'cycle4'],
+    sentence: 'Les poésies que Léa a [ ... ] étaient magnifiques.',
+    choices: ['écrites', 'écrit', 'écrite', 'écrits'],
+    correct: 0,
+    rule: 'Avec l\'auxiliaire "avoir", le participe passé s\'accorde avec le COD placé avant ("que" mis pour "les poésies", féminin pluriel).'
+  },
+  {
+    category: 'leur / leurs',
+    levels: ['cycle3', 'cycle4'],
+    sentence: 'Les élèves ont rangé [ ... ] affaires puis le maître [ ... ] a souri.',
+    choices: ['leurs / leur', 'leur / leurs', 'leur / leur', 'leurs / leurs'],
+    correct: 0,
+    rule: 'Devant un nom pluriel, "leur" prend un -s ("leurs affaires"). Devant un verbe, "leur" est un pronom invariable ("leur a souri").'
+  }
+];
+
+function initHomophones() {
+  homophonesInitialized = true;
+  refreshHomophoneQuestion();
+}
+
+function refreshHomophoneQuestion() {
+  const filtered = HOMOPHONES_DB.filter(item => item.levels.includes(appState.cycle));
+  const pool = filtered.length > 0 ? filtered : HOMOPHONES_DB;
+  currentHomophoneIdx = Math.floor(Math.random() * pool.length);
+  renderHomophoneCard(pool[currentHomophoneIdx]);
+}
+
+function renderHomophoneCard(data) {
+  if (!data) return;
+
+  const catTag = document.getElementById('homophone-category-tag');
+  if (catTag) catTag.textContent = `Piège : ${data.category}`;
+
+  const sentEl = document.getElementById('homophone-sentence-display');
+  if (sentEl) sentEl.innerHTML = data.sentence.replace(/\[ \.\.\. \]/g, '<span style="color: var(--primary); font-weight: 900; text-decoration: underline;">[ ... ]</span>');
+
+  const choicesBox = document.getElementById('homophone-choices-grid');
+  if (!choicesBox) return;
+  choicesBox.innerHTML = '';
+
+  const expBox = document.getElementById('homophone-explanation');
+  if (expBox) expBox.style.display = 'none';
+
+  const nextBtn = document.getElementById('btn-next-homophone');
+  if (nextBtn) nextBtn.style.display = 'none';
+
+  data.choices.forEach((choice, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px; color: var(--secondary);"></i> <strong>${choice}</strong>`;
+    btn.onclick = () => handleHomophoneChoice(idx, btn, data);
+    choicesBox.appendChild(btn);
+  });
+  lucide.createIcons();
+}
+
+function handleHomophoneChoice(idx, btn, data) {
+  const choicesBox = document.getElementById('homophone-choices-grid');
+  if (choicesBox) {
+    choicesBox.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+  }
+
+  const expBox = document.getElementById('homophone-explanation');
+  const streakBadge = document.getElementById('homophone-score-badge');
+  const nextBtn = document.getElementById('btn-next-homophone');
+
+  if (idx === data.correct) {
+    btn.classList.add('correct');
+    AudioSynth.playSuccess();
+    appState.score += 5;
+    homophoneStreak++;
+    if (streakBadge) streakBadge.textContent = `Série : ${homophoneStreak} réussites`;
+    if (expBox) {
+      expBox.style.display = 'block';
+      expBox.innerHTML = `<strong style="color: var(--positive);"><i data-lucide="check-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i> Bravo !</strong> Exactement.<br><p style="margin-top: 4px; font-size: 0.9rem;"><strong>L'astuce de Prof-Abdou :</strong> ${data.rule}</p>`;
+      lucide.createIcons();
+    }
+  } else {
+    btn.classList.add('wrong');
+    AudioSynth.playError();
+    homophoneStreak = 0;
+    if (streakBadge) streakBadge.textContent = `Série : 0 réussite`;
+    if (expBox) {
+      expBox.style.display = 'block';
+      expBox.innerHTML = `<strong style="color: var(--error);">Attention au piège !</strong> La bonne réponse est : <em>${data.choices[data.correct]}</em>.<br><p style="margin-top: 4px; font-size: 0.9rem;"><strong>L'astuce de Prof-Abdou :</strong> ${data.rule}</p>`;
+      lucide.createIcons();
+    }
+  }
+
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
+  persistState();
+}
+
+function loadNextHomophoneQuestion() {
+  refreshHomophoneQuestion();
+}
+
+/* ========================================================================
+   8. MODULE: L'ARCHITECTE DE PHRASES (SYNTAXE)
+   ======================================================================== */
+let syntaxInitialized = false;
+
+const SENTENCE_PUZZLES = {
+  cycle2: [
+    {
+      expected: ['Le', 'petit', 'chat', 'boit', 'du', 'lait', 'frais.'],
+      explanation: 'Dans une phrase simple en français, l\'ordre habituel est : Sujet (Le petit chat) + Verbe (boit) + Complément (du lait frais).'
+    },
+    {
+      expected: ['Les', 'enfants', 'jouent', 'dans', 'la', 'cour.'],
+      explanation: 'La majuscule marque le début de phrase ("Les") et le point final clôture l\'idée.'
+    }
+  ],
+  cycle3: [
+    {
+      expected: ['Chaque', 'matin,', 'le', 'vieux', 'jardinier', 'arrose', 'soigneusement', 'ses', 'fleurs.'],
+      explanation: 'Le complément de temps ("Chaque matin,") est placé en tête, suivi du sujet ("le vieux jardinier"), du verbe ("arrose") et du COD ("ses fleurs").'
+    },
+    {
+      expected: ['Sur', 'la', 'branche,', 'un', 'rouge-gorge', 'chante', 'une', 'mélodie', 'joyeuse.'],
+      explanation: 'Complément de lieu en amorce, suivi du sujet et de son groupe verbal enrichi d\'un adjectif.'
+    }
+  ],
+  cycle4: [
+    {
+      expected: ['Dès', 'l\'aube,', 'le', 'poète', 'contemple', 'avec', 'fascination', 'les', 'étoiles', 'lointaines.'],
+      explanation: 'Construction littéraire rythmée par un complément circonstanciel de manière ("avec fascination").'
+    },
+    {
+      expected: ['Malgré', 'la', 'tempête,', 'le', 'navire', 'poursuivit', 'vaillamment', 'sa', 'périlleuse', 'odyssée.'],
+      explanation: 'Emploi du passé simple ("poursuivit") caractéristique du récit romanesque.'
+    }
+  ]
+};
+
+let currentPuzzle = null;
+let targetTokens = [];
+let sourceTokens = [];
+
+function initSyntaxe() {
+  syntaxInitialized = true;
+  loadNextSentencePuzzle();
+}
+
+function loadNextSentencePuzzle() {
+  const pool = SENTENCE_PUZZLES[appState.cycle] || SENTENCE_PUZZLES.cycle3;
+  currentPuzzle = pool[Math.floor(Math.random() * pool.length)];
+  targetTokens = [];
+  sourceTokens = [...currentPuzzle.expected].sort(() => Math.random() - 0.5);
+
+  const fbBox = document.getElementById('sentence-feedback');
+  if (fbBox) fbBox.style.display = 'none';
+
+  renderSentenceZones();
+}
+
+function renderSentenceZones() {
+  const targetZone = document.getElementById('sentence-target-zone');
+  const sourceZone = document.getElementById('sentence-source-zone');
+  if (!targetZone || !sourceZone) return;
+
+  targetZone.innerHTML = '';
+  sourceZone.innerHTML = '';
+
+  if (targetTokens.length === 0) {
+    targetZone.innerHTML = '<span style="color: var(--on-surface-variant); font-style: italic;">Clique sur les étiquettes ci-dessous pour assembler la phrase...</span>';
+  } else {
+    targetTokens.forEach((word, idx) => {
+      const chip = document.createElement('div');
+      chip.className = 'phrase-token';
+      chip.innerHTML = `${word} <i data-lucide="x" style="width: 14px; height: 14px; color: var(--error);"></i>`;
+      chip.onclick = () => removeTokenFromTarget(idx);
+      targetZone.appendChild(chip);
+    });
+  }
+
+  sourceTokens.forEach((word, idx) => {
+    const chip = document.createElement('div');
+    chip.className = 'phrase-token';
+    chip.innerHTML = `${word} <i data-lucide="plus" style="width: 14px; height: 14px; color: var(--secondary);"></i>`;
+    chip.onclick = () => addTokenToTarget(idx);
+    sourceZone.appendChild(chip);
+  });
+
+  lucide.createIcons();
+}
+
+function addTokenToTarget(sourceIdx) {
+  const word = sourceTokens.splice(sourceIdx, 1)[0];
+  targetTokens.push(word);
+  AudioSynth.playPop();
+  renderSentenceZones();
+}
+
+function removeTokenFromTarget(targetIdx) {
+  const word = targetTokens.splice(targetIdx, 1)[0];
+  sourceTokens.push(word);
+  AudioSynth.playPop();
+  renderSentenceZones();
+}
+
+function resetSentenceTokens() {
+  if (!currentPuzzle) return;
+  targetTokens = [];
+  sourceTokens = [...currentPuzzle.expected].sort(() => Math.random() - 0.5);
+  AudioSynth.playPop();
+  renderSentenceZones();
+  const fbBox = document.getElementById('sentence-feedback');
+  if (fbBox) fbBox.style.display = 'none';
+}
+
+function verifySentenceOrder() {
+  if (!currentPuzzle) return;
+  const fbBox = document.getElementById('sentence-feedback');
+  if (!fbBox) return;
+
+  const isComplete = targetTokens.length === currentPuzzle.expected.length;
+  const isCorrect = isComplete && targetTokens.every((w, idx) => w === currentPuzzle.expected[idx]);
+
+  if (isCorrect) {
+    AudioSynth.playFanfare();
+    appState.score += 15;
+    appState.trophies.syntax_builder = true;
+    fbBox.style.display = 'block';
+    fbBox.innerHTML = `
+      <strong style="color: var(--positive);"><i data-lucide="check-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i> Phrase parfaite !</strong>
+      <p style="margin-top: var(--space-xs); font-size: 0.95rem;">« ${targetTokens.join(' ')} »</p>
+      <small style="color: var(--on-surface-variant);">${currentPuzzle.explanation}</small>
+    `;
+    lucide.createIcons();
+    setProfSpeech('Quelle élégance de syntaxe ! Ta phrase est parfaitement articulée et respecte les accords.');
+    persistState();
+  } else {
+    AudioSynth.playError();
+    fbBox.style.display = 'block';
+    fbBox.innerHTML = `
+      <strong style="color: var(--error);">Ce n'est pas encore le bon agencement !</strong>
+      <p style="margin-top: 4px; font-size: 0.9rem;">Vérifie l'emplacement de la majuscule, la place du verbe et la ponctuation finale.</p>
+    `;
+  }
+}
+
+/* ========================================================================
+   9. MODULE: L'AGORA LITTÉRAIRE & FIGURES DE STYLE
+   ======================================================================== */
+let cultureInitialized = false;
+let curCultureMode = 'auteurs';
+let curCultureQuestion = null;
+
+const CULTURE_QUESTIONS = {
+  auteurs: [
+    {
+      title: 'Jean de La Fontaine et ses Fables',
+      quote: '« Maître Corbeau, sur un arbre perché, tenait en son bec un fromage. »',
+      prompt: 'Quel animal rusé réussit à subtiliser le fromage du corbeau par de douces flatteries ?',
+      choices: ['Le Renard', 'Le Loup', 'Le Lion', 'Le Lièvre'],
+      correct: 0,
+      note: 'Dans la fable "Le Corbeau et le Renard" (1668), le renard démontre que "tout flatteur vit aux dépens de celui qui l\'écoute".'
+    },
+    {
+      title: 'Molière et la comédie classique',
+      quote: '« Il n\'est rien de plus sec et de plus aride que ses bonnes grâces et ses caresses... »',
+      prompt: 'Comment s\'appelle le célèbre personnage d\'avare obsédé par sa cassette d\'or dans la pièce de Molière ?',
+      choices: ['Harpagon', 'Tartuffe', 'Scapin', 'Dom Juan'],
+      correct: 0,
+      note: 'Harpagon est le héros éponyme de "L\'Avare" (1668), caricature magistrale de l\'avarice humaine.'
+    },
+    {
+      title: 'Victor Hugo et le Romantisme',
+      quote: '« Tant qu\'il y aura sur la terre ignorance et misère, des livres de la nature de celui-ci pourront ne pas être inutiles. »',
+      prompt: 'Dans quel chef-d\'œuvre de Victor Hugo rencontre-t-on Jean Valjean, Cosette et Gavroche ?',
+      choices: ['Les Misérables', 'Notre-Dame de Paris', 'Les Contemplations', 'Quatrevingt-Treize'],
+      correct: 0,
+      note: '"Les Misérables" (1862) est une fresque sociale monumentale sur la rédemption, l\'amour et la justice.'
+    },
+    {
+      title: 'Antoine de Saint-Exupéry',
+      quote: '« On ne voit bien qu\'avec le cœur. L\'essentiel est invisible pour les yeux. »',
+      prompt: 'De quel conte philosophique mondialement célèbre est tirée cette citation emblématique ?',
+      choices: ['Le Petit Prince', 'Vol de nuit', 'Terre des hommes', 'L\'Enfant noir'],
+      correct: 0,
+      note: 'Publié en 1943, "Le Petit Prince" est l\'un des livres les plus traduits et aimés au monde.'
+    }
+  ],
+  figures: [
+    {
+      title: 'Identifier la figure de style',
+      quote: '« La terre est bleue comme une orange. » (Paul Éluard)',
+      prompt: 'Quelle figure de style unit ces deux réalités par le mot-outil "comme" ?',
+      choices: ['Une comparaison', 'Une métaphore', 'Un pléonasme', 'Une antithèse'],
+      correct: 0,
+      note: 'La comparaison rapproche deux termes au moyen d\'un outil de comparaison explicite ("comme", "tel", "semblable à").'
+    },
+    {
+      title: 'Identifier la figure de style',
+      quote: '« Ce joueur d\'échecs est un véritable renard sur le plateau. »',
+      prompt: 'Quelle figure de style transpose directement les qualités de l\'animal sans outil de comparaison ?',
+      choices: ['Une métaphore', 'Une litote', 'Une allitération', 'Une comparaison'],
+      correct: 0,
+      note: 'La métaphore est une assimilation directe sans terme de comparaison explicite.'
+    },
+    {
+      title: 'Identifier la figure de style',
+      quote: '« Le vent d\'automne hurlait et gémissait à travers les volets entrouverts. »',
+      prompt: 'Quelle figure attribue des actions et sentiments humains à un élément inanimé ?',
+      choices: ['Une personnification', 'Une hyperbole', 'Une gradation', 'Une anaphore'],
+      correct: 0,
+      note: 'La personnification prête des traits, des voix ou des comportements vivants à des objets ou des forces naturelles.'
+    },
+    {
+      title: 'Identifier la figure de style',
+      quote: '« Je meurs de faim, je pourrais avaler une montagne de crêpes ! »',
+      prompt: 'Quelle figure repose sur une exagération volontaire destinée à frapper l\'imagination ?',
+      choices: ['Une hyperbole', 'Un euphémisme', 'Une litote', 'Une périphrase'],
+      correct: 0,
+      note: 'L\'hyperbole amplifie démesurément la réalité pour produire un effet dramatique ou comique.'
+    }
+  ],
+  etymo: [
+    {
+      title: 'Étymologie gréco-latine',
+      quote: 'Dans les mots "Téléphone", "Téléscope" et "Télévision"...',
+      prompt: 'Que signifie le préfixe grec d\'origine "télé-" ?',
+      choices: ['Loin / À distance', 'Électrique', 'Parler', 'Rapide'],
+      correct: 0,
+      note: 'Du grec ancien tēle (loin, à distance). Téléphone = entendre de loin ; Télescope = observer de loin.'
+    },
+    {
+      title: 'Étymologie gréco-latine',
+      quote: 'Dans les mots "Orthographe", "Orthodontiste" et "Orthophonie"...',
+      prompt: 'Que signifie l\'élément grec "ortho-" ?',
+      choices: ['Droit / Correct', 'Langue', 'Sonore', 'Beau'],
+      correct: 0,
+      note: 'Du grec orthos (droit, juste). L\'orthographe est littéralement la manière correcte d\'écrire les mots.'
+    },
+    {
+      title: 'Étymologie gréco-latine',
+      quote: 'Dans les mots "Biographie", "Biologie" et "Biodiversité"...',
+      prompt: 'Que signifie la racine grecque "bio-" ?',
+      choices: ['La vie', 'La nature', 'Le livre', 'La terre'],
+      correct: 0,
+      note: 'Du grec bios (la vie). La biographie est l\'écriture de la vie d\'une personne.'
+    }
+  ]
+};
+
+function initCulture() {
+  cultureInitialized = true;
+  refreshCultureQuestion();
+}
+
+function switchCultureMode(mode) {
+  curCultureMode = mode;
+  const nav = document.getElementById('culture-subnav');
+  if (nav) {
+    const btns = nav.querySelectorAll('.segmented-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    if (mode === 'auteurs') btns[0].classList.add('active');
+    if (mode === 'figures') btns[1].classList.add('active');
+    if (mode === 'etymo') btns[2].classList.add('active');
+  }
+  AudioSynth.playPop();
+  refreshCultureQuestion();
+}
+
+function refreshCultureQuestion() {
+  const pool = CULTURE_QUESTIONS[curCultureMode] || CULTURE_QUESTIONS.auteurs;
+  curCultureQuestion = pool[Math.floor(Math.random() * pool.length)];
+
+  const titleEl = document.getElementById('culture-question-title');
+  if (titleEl) titleEl.textContent = curCultureQuestion.title;
+
+  const quoteEl = document.getElementById('culture-question-quote');
+  if (quoteEl) quoteEl.textContent = curCultureQuestion.quote;
+
+  const promptEl = document.getElementById('culture-question-prompt');
+  if (promptEl) promptEl.textContent = curCultureQuestion.prompt;
+
+  const choicesBox = document.getElementById('culture-choices-box');
+  if (!choicesBox) return;
+  choicesBox.innerHTML = '';
+
+  const fbBox = document.getElementById('culture-feedback');
+  if (fbBox) fbBox.style.display = 'none';
+
+  const nextBtn = document.getElementById('btn-next-culture');
+  if (nextBtn) nextBtn.style.display = 'none';
+
+  curCultureQuestion.choices.forEach((choice, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.innerHTML = `<span style="font-weight: 800; color: var(--secondary);">${String.fromCharCode(65 + idx)}.</span> <strong>${choice}</strong>`;
+    btn.onclick = () => handleCultureChoice(idx, btn);
+    choicesBox.appendChild(btn);
+  });
+}
+
+function handleCultureChoice(chosenIdx, btn) {
+  const choicesBox = document.getElementById('culture-choices-box');
+  if (choicesBox) {
+    choicesBox.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+  }
+
+  const fbBox = document.getElementById('culture-feedback');
+  const nextBtn = document.getElementById('btn-next-culture');
+
+  if (chosenIdx === curCultureQuestion.correct) {
+    btn.classList.add('correct');
+    AudioSynth.playSuccess();
+    appState.score += 10;
+    appState.trophies.culture_scholar = true;
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--positive);"><i data-lucide="award" style="width: 18px; height: 18px; vertical-align: middle;"></i> Brillante culture littéraire !</strong><br><p style="margin-top: 4px; font-size: 0.95rem;">${curCultureQuestion.note}</p>`;
+      lucide.createIcons();
+    }
+  } else {
+    btn.classList.add('wrong');
+    AudioSynth.playError();
+    if (fbBox) {
+      fbBox.style.display = 'block';
+      fbBox.innerHTML = `<strong style="color: var(--error);">Pas tout à fait !</strong> La réponse attendue était : <em>${curCultureQuestion.choices[curCultureQuestion.correct]}</em>.<br><p style="margin-top: 4px; font-size: 0.95rem;">${curCultureQuestion.note}</p>`;
+    }
+  }
+
+  if (nextBtn) nextBtn.style.display = 'inline-flex';
+  persistState();
+}
+
+function loadNextCultureQuestion() {
+  refreshCultureQuestion();
+}
+
+/* ========================================================================
+   10. MODULE: ESPACE ENSEIGNANT / VIDÉOPROJECTEUR (CLASSE ENTIÈRE)
+   ======================================================================== */
+let phraseDuJourInitialized = false;
+
+const PHRASES_DU_JOUR = [
+  {
+    cycle: 'Cycle 3 (CM1-CM2)',
+    sentence: 'Dans la forêt profonde, le renard rusé observe silencieusement les oiseaux migrateurs.',
+    subject: 'le renard rusé (Groupe Nominal Sujet)',
+    verb: 'observe (verbe observer, 1er groupe, au Présent de l\'indicatif, 3e pers. du singulier)',
+    complements: 'Lieu : "Dans la forêt profonde" (C.C. de lieu) | COD : "les oiseaux migrateurs" | Manière : "silencieusement"'
+  },
+  {
+    cycle: 'Cycle 3 (CM1-CM2)',
+    sentence: 'Hier soir, les étoiles scintillantes illuminaient le ciel noir d\'encre.',
+    subject: 'les étoiles scintillantes (GNS au féminin pluriel)',
+    verb: 'illuminaient (verbe illuminer, à l\'Imparfait de l\'indicatif, terminaison -aient)',
+    complements: 'Temps : "Hier soir" (C.C. de temps) | COD : "le ciel noir d\'encre"'
+  },
+  {
+    cycle: 'Cycle 4 (Collège)',
+    sentence: 'Quand retentit la cloche du collège, les jeunes apprentis franchirent la porte avec enthousiasme.',
+    subject: 'les jeunes apprentis (Sujet de la proposition principale)',
+    verb: 'franchirent (verbe franchir, 2e groupe, au Passé Simple de l\'indicatif)',
+    complements: 'Proposition subordonnée circonstancielle de temps : "Quand retentit la cloche..." | Manière : "avec enthousiasme"'
+  }
+];
+
+let curPDJIndex = 0;
+let classroomTimerInterval = null;
+let classroomTimerRemaining = 30;
+let isTimerRunning = false;
+
+function initPhraseDuJour() {
+  phraseDuJourInitialized = true;
+  generateNewPhraseDuJour();
+  updateClassroomTimerDisplay();
+}
+
+function generateNewPhraseDuJour() {
+  curPDJIndex = (curPDJIndex + 1) % PHRASES_DU_JOUR.length;
+  const data = PHRASES_DU_JOUR[curPDJIndex];
+
+  const pill = document.getElementById('pdj-cycle-pill');
+  if (pill) pill.textContent = data.cycle;
+
+  const sentEl = document.getElementById('pdj-display-sentence');
+  if (sentEl) sentEl.textContent = `« ${data.sentence} »`;
+
+  // Hide breakdown
+  const s1 = document.getElementById('pdj-ans-subject');
+  const s2 = document.getElementById('pdj-ans-verb');
+  const s3 = document.getElementById('pdj-ans-complements');
+  if (s1) s1.textContent = '[Caché]';
+  if (s2) s2.textContent = '[Caché]';
+  if (s3) s3.textContent = '[Caché]';
+
+  AudioSynth.playPop();
+}
+
+function revealPhraseStep(step) {
+  const data = PHRASES_DU_JOUR[curPDJIndex];
+  AudioSynth.playChime();
+  if (step === 1) {
+    const el = document.getElementById('pdj-ans-subject');
+    if (el) el.textContent = data.subject;
+  } else if (step === 2) {
+    const el = document.getElementById('pdj-ans-verb');
+    if (el) el.textContent = data.verb;
+  } else if (step === 3) {
+    const el = document.getElementById('pdj-ans-complements');
+    if (el) el.textContent = data.complements;
+  }
+}
+
+function revealAllPhraseSteps() {
+  revealPhraseStep(1);
+  revealPhraseStep(2);
+  revealPhraseStep(3);
+}
+
+function setClassroomTimer(seconds) {
+  if (isTimerRunning) togglePlayClassroomTimer();
+  classroomTimerRemaining = seconds;
+  updateClassroomTimerDisplay();
+  AudioSynth.playPop();
+}
+
+function updateClassroomTimerDisplay() {
+  const display = document.getElementById('classroom-timer-display');
+  if (!display) return;
+  const m = Math.floor(classroomTimerRemaining / 60).toString().padStart(2, '0');
+  const s = (classroomTimerRemaining % 60).toString().padStart(2, '0');
+  display.textContent = `${m}:${s}`;
+}
+
+function togglePlayClassroomTimer() {
+  const btnLabel = document.getElementById('timer-play-label');
+  const btnIcon = document.getElementById('timer-play-icon');
+
+  if (isTimerRunning) {
+    clearInterval(classroomTimerInterval);
+    isTimerRunning = false;
+    if (btnLabel) btnLabel.textContent = 'Reprendre';
+    if (btnIcon) btnIcon.setAttribute('data-lucide', 'play');
+  } else {
+    isTimerRunning = true;
+    if (btnLabel) btnLabel.textContent = 'Pause';
+    if (btnIcon) btnIcon.setAttribute('data-lucide', 'pause');
+    AudioSynth.playTone(523.25, 'sine', 0.1, 0.1);
+
+    classroomTimerInterval = setInterval(() => {
+      classroomTimerRemaining--;
+      updateClassroomTimerDisplay();
+
+      if (classroomTimerRemaining <= 3 && classroomTimerRemaining > 0) {
+        AudioSynth.playTone(440, 'triangle', 0.1, 0.15);
+      }
+      if (classroomTimerRemaining <= 0) {
+        clearInterval(classroomTimerInterval);
+        isTimerRunning = false;
+        AudioSynth.playFanfare();
+        if (btnLabel) btnLabel.textContent = 'Démarrer';
+        if (btnIcon) btnIcon.setAttribute('data-lucide', 'play');
+        setProfSpeech('Ding ! Le temps imparti est écoulé. Levez vos ardoises, montrez votre travail au vidéoprojecteur !');
+      }
+    }, 1000);
+  }
+  lucide.createIcons();
+}
+
+function resetClassroomTimer() {
+  if (isTimerRunning) {
+    clearInterval(classroomTimerInterval);
+    isTimerRunning = false;
+  }
+  classroomTimerRemaining = 30;
+  updateClassroomTimerDisplay();
+  const btnLabel = document.getElementById('timer-play-label');
+  const btnIcon = document.getElementById('timer-play-icon');
+  if (btnLabel) btnLabel.textContent = 'Démarrer';
+  if (btnIcon) btnIcon.setAttribute('data-lucide', 'play');
+  lucide.createIcons();
+}
+
+function pickRandomTeam() {
+  const teams = [
+    'Équipe Victor Hugo',
+    'Équipe Molière',
+    'Équipe George Sand',
+    'Équipe Jean de La Fontaine',
+    'Équipe Charles Baudelaire',
+    'Équipe Marcel Pagnol'
+  ];
+  AudioSynth.playChime();
+  const resEl = document.getElementById('random-team-result');
+  if (!resEl) return;
+
+  let counter = 0;
+  const anim = setInterval(() => {
+    resEl.textContent = teams[Math.floor(Math.random() * teams.length)];
+    counter++;
+    if (counter > 8) {
+      clearInterval(anim);
+      const chosen = teams[Math.floor(Math.random() * teams.length)];
+      resEl.textContent = `🎯 C'est au tour de l'${chosen} !`;
+      AudioSynth.playSuccess();
+    }
+  }, 80);
+}
+
+/* ========================================================================
+   11. MODULE: MON PALMARÈS & TROPHÉES
+   ======================================================================== */
+function renderTrophiesView() {
+  const container = document.getElementById('trophy-cards-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  let unlockedCount = 0;
+
+  TROPHIES_DEF.forEach(trophy => {
+    const isUnlocked = !!appState.trophies[trophy.id];
+    if (isUnlocked) unlockedCount++;
+
+    const card = document.createElement('div');
+    card.className = `trophy-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+    card.innerHTML = `
+      <div class="trophy-icon" style="${isUnlocked ? 'background: var(--primary-container); color: var(--on-primary-container);' : ''}">
+        <i data-lucide="${trophy.icon}" style="width: 26px; height: 26px;"></i>
+      </div>
+      <h4 style="font-size: 0.95rem; margin-bottom: 4px;">${trophy.title}</h4>
+      <p style="font-size: 0.8rem; color: var(--on-surface-variant); margin: 0;">${trophy.desc}</p>
+      <span class="pill ${isUnlocked ? 'pill-success' : 'pill-bubblegum'}" style="margin-top: var(--space-sm); font-size: 0.75rem;">
+        ${isUnlocked ? 'Débloqué !' : 'À conquérir'}
+      </span>
+    `;
+    container.appendChild(card);
+  });
+
+  const countEl = document.getElementById('stat-trophies-unlocked');
+  if (countEl) countEl.textContent = `${unlockedCount} / ${TROPHIES_DEF.length}`;
+
+  lucide.createIcons();
+}
+
+function exportDiploma() {
+  AudioSynth.playFanfare();
+  const textContent = `
+======================================================
+  ACADÉMIE DE LANGUE FRANÇAISE DE PROF-ABDOU
+  ATTESTATION DE RÉUSSITE & BILAN PÉDAGOGIQUE
+======================================================
+
+Date : ${new Date().toLocaleDateString('fr-FR')}
+Niveau actuel : ${appState.cycle.toUpperCase()}
+Total des Plumes d'or : ${appState.score}
+Défis éclair complétés : ${appState.challengesCompleted}
+Mots-mystères trouvés : ${appState.motusCompleted}
+Verbes correctement conjugués : ${appState.verbsConjugated}
+
+Distinction accordée :
+« Grand Ami de la Langue Française »
+
+Signature de l'enseignant :
+Prof-Abdou
+======================================================
+Inspiré des 40 jeux pédagogiques de français
+et des rituels interactifs de Classe à deux.
+  `.trim();
+
+  if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+    window.notebookAppApi.triggerFileDownload({
+      content: textContent,
+      contentType: 'text/plain',
+      encoding: 'UTF-8',
+      filename: `Bilan_Francais_Prof_Abdou_${new Date().toISOString().slice(0, 10)}.txt`
+    });
+  } else {
+    // Web fallback download
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Bilan_Francais_Prof_Abdou.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  setProfSpeech('Ton bilan pédagogique a été exporté avec succès ! Tu peux le partager avec ton maître ou tes parents.');
+}
+
+function confirmResetProgress() {
+  if (confirm('Souhaites-tu vraiment réinitialiser toutes tes Plumes d\'or et tes trophées pour recommencer une nouvelle aventure ?')) {
+    appState.score = 0;
+    appState.challengesCompleted = 0;
+    appState.motusCompleted = 0;
+    appState.verbsConjugated = 0;
+    Object.keys(appState.trophies).forEach(k => appState.trophies[k] = false);
+    AudioSynth.playTone(200, 'sine', 0.2, 0.1);
+    persistState();
+    setProfSpeech('Remise à zéro effectuée. Une nouvelle page blanche s\'offre à toi ! À tes plumes !');
+  }
+}
+
+/* ========================================================================
+   12. APP INITIALIZATION & READY SIGNAL
+   ======================================================================== */
+window.addEventListener('DOMContentLoaded', async () => {
+  lucide.createIcons();
+  await loadSavedState();
+  initDailyChallenge();
+  
+  // App Ready signal for NotebookOS host
+  if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+    window.notebookAppApi.notifyAppReady();
+  }
+});
+</script>
+</body>
+</html>
